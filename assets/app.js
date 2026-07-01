@@ -1,9 +1,7 @@
-(function () {
-  "use strict";
-
+(() => {
   const projects = Array.isArray(window.PROJECTS) ? window.PROJECTS : [];
-  const grid = document.getElementById("projectGrid");
-  const template = document.getElementById("projectCardTemplate");
+  const rows = document.getElementById("projectRows");
+  const rowTemplate = document.getElementById("projectRowTemplate");
   const searchInput = document.getElementById("searchInput");
   const statusFilter = document.getElementById("statusFilter");
   const domainFilter = document.getElementById("domainFilter");
@@ -11,168 +9,152 @@
   const emptyClear = document.getElementById("emptyClear");
   const emptyState = document.getElementById("emptyState");
   const resultCount = document.getElementById("resultCount");
-  const statGrid = document.getElementById("statGrid");
+  const summaryList = document.getElementById("summaryList");
+  const headerRecordCount = document.getElementById("headerRecordCount");
   const dialog = document.getElementById("projectDialog");
   const dialogContent = document.getElementById("dialogContent");
   const closeDialog = document.getElementById("closeDialog");
-  const themeToggle = document.getElementById("themeToggle");
-  const themeLabel = themeToggle.querySelector(".theme-label");
 
-  const icon = (name) => ({
-    document: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 2.75h7.4L18.5 7v14.25H6.5z"></path><path d="M13.5 2.75V7h5"></path><path d="M9 11h6M9 15h6M9 19h4"></path></svg>',
-    github: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.3a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.61-3.36-1.18-3.36-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.54 1.04 1.54 1.04.9 1.54 2.35 1.1 2.92.84.09-.65.35-1.1.64-1.35-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.28.1-2.67 0 0 .84-.27 2.75 1.03A9.5 9.5 0 0 1 12 6.45c.85 0 1.7.11 2.5.34 1.9-1.3 2.74-1.03 2.74-1.03.55 1.39.2 2.42.1 2.67.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.94.36.31.68.91.68 1.84v2.72c0 .27.18.58.69.48A10 10 0 0 0 12 2.3Z"></path></svg>',
-    trello: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.5"></rect><rect x="6.5" y="6.5" width="4.5" height="8" rx=".7"></rect><rect x="13" y="6.5" width="4.5" height="12" rx=".7"></rect></svg>',
-    folder: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5h6l1.6 2H21v9.75A2.75 2.75 0 0 1 18.25 21H5.75A2.75 2.75 0 0 1 3 18.25z"></path><path d="M3 8.5h18"></path></svg>'
-  }[name]);
+  const safe = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+  }[character]));
 
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>'"]/g, (char) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
-    }[char]));
-  }
+  const resourcesFor = (project) => [
+    { label: "Project proposal", value: project.proposalUrl, type: "Proposal" },
+    { label: "GitHub repository", value: project.githubUrl, type: "GitHub" },
+    { label: "Trello board", value: project.trelloUrl, type: "Trello" },
+    { label: "Working directory", value: project.workspaceUrl, type: "Workspace" }
+  ];
 
-  function linksFor(project) {
-    return [
-      { label: "Proposal", icon: "document", url: project.proposalUrl },
-      { label: "GitHub", icon: "github", url: project.githubUrl },
-      { label: "Trello", icon: "trello", url: project.trelloUrl },
-      { label: "Workspace", icon: "folder", url: project.workspaceUrl }
-    ];
-  }
+  const linkedCount = (project) => resourcesFor(project).filter((resource) => Boolean(resource.value)).length;
 
-  function linkedCount(project) {
-    return linksFor(project).filter((item) => Boolean(item.url)).length;
-  }
+  const statusClass = (status) => `status-${String(status).toLowerCase().replaceAll("·", "").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`;
 
-  function renderStats() {
-    const approved = projects.filter((p) => p.status === "Approved" || p.status === "Approved · scope confirmation").length;
-    const clarification = projects.filter((p) => p.status === "Clarification required").length;
-    const reassigned = projects.filter((p) => p.status === "Reassigned").length;
-    const newTopics = projects.filter((p) => p.status === "New topic required").length;
-
-    document.getElementById("heroTotal").textContent = projects.length;
-    document.getElementById("heroApproved").textContent = approved;
-    document.getElementById("heroAction").textContent = projects.length - approved;
-
-    const stats = [
-      { number: projects.length, label: "Student records", description: "current cohort directory" },
-      { number: approved, label: "Approved projects", description: "including scope-confirmation items" },
-      { number: clarification, label: "Clarification required", description: "research or scope response needed" },
-      { number: reassigned + newTopics, label: "Topic actions", description: "reassigned or awaiting a new topic" }
-    ];
-
-    statGrid.innerHTML = stats.map((item) => `
-      <article class="stat-card">
-        <strong>${item.number}</strong>
-        <span>${escapeHtml(item.label)}</span>
-        <small>${escapeHtml(item.description)}</small>
-      </article>`).join("");
-  }
+  const profileFor = (project) => {
+    if (project.status === "New topic required") return "Final-year Information Systems student awaiting a confirmed project topic.";
+    return `Final-year Information Systems student developing a ${project.domain.toLowerCase()} system.`;
+  };
 
   function populateDomains() {
-    const domains = [...new Set(projects.map((p) => p.domain))].sort((a, b) => a.localeCompare(b));
-    domains.forEach((domain) => {
-      const option = document.createElement("option");
-      option.value = domain;
-      option.textContent = domain;
-      domainFilter.appendChild(option);
-    });
+    [...new Set(projects.map((project) => project.domain).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b))
+      .forEach((domain) => {
+        const option = document.createElement("option");
+        option.value = domain;
+        option.textContent = domain;
+        domainFilter.appendChild(option);
+      });
+  }
+
+  function renderSummary() {
+    const approved = projects.filter((project) => ["Approved", "Approved · scope confirmation"].includes(project.status)).length;
+    const clarification = projects.filter((project) => project.status === "Clarification required").length;
+    const action = projects.filter((project) => ["Reassigned", "New topic required"].includes(project.status)).length;
+    const linked = projects.reduce((total, project) => total + linkedCount(project), 0);
+    const summary = [
+      ["Student records", projects.length],
+      ["Approved or progressing", approved],
+      ["Scope clarification", clarification],
+      ["Topic actions", action],
+      ["Evidence links live", linked]
+    ];
+    summaryList.innerHTML = summary.map(([label, value]) => `<div class="summary-row"><dt>${safe(label)}</dt><dd>${value}</dd></div>`).join("");
+    headerRecordCount.textContent = `${projects.length} records`;
   }
 
   function filteredProjects() {
-    const query = searchInput.value.trim().toLocaleLowerCase();
-    const status = statusFilter.value;
-    const domain = domainFilter.value;
-
+    const query = searchInput.value.trim().toLowerCase();
     return projects.filter((project) => {
-      const haystack = [project.student, project.title, project.summary, project.domain, project.status, project.note]
-        .join(" ").toLocaleLowerCase();
-      return (!query || haystack.includes(query)) &&
-        (status === "all" || project.status === status) &&
-        (domain === "all" || project.domain === domain);
+      const searchable = [project.student, project.title, project.summary, project.domain, project.status, project.note, project.proposalStage]
+        .join(" ").toLowerCase();
+      return (!query || searchable.includes(query)) &&
+        (statusFilter.value === "all" || project.status === statusFilter.value) &&
+        (domainFilter.value === "all" || project.domain === domainFilter.value);
     });
   }
 
-  function renderProjects() {
+  function renderRows() {
     const list = filteredProjects();
-    grid.innerHTML = "";
+    rows.innerHTML = "";
     list.forEach((project) => {
-      const item = template.content.cloneNode(true);
-      const card = item.querySelector(".project-card");
-      card.dataset.projectId = project.id;
-      item.querySelector(".status-badge").textContent = project.status;
-      item.querySelector(".status-badge").classList.add(statusClass(project.status));
-      item.querySelector(".project-domain").textContent = project.domain;
-      item.querySelector(".student-name").textContent = project.student;
-      item.querySelector(".project-title").textContent = project.title;
-      item.querySelector(".project-summary").textContent = project.summary;
-      const count = linkedCount(project);
-      item.querySelector(".resource-text").textContent = count ? `${count} of 4 resources linked` : "Project links pending";
-      item.querySelector(".resource-dot").classList.toggle("linked", count > 0);
-      item.querySelector(".project-open").addEventListener("click", () => openProject(project));
-      grid.appendChild(item);
+      const recordNo = projects.indexOf(project) + 1;
+      const fragment = rowTemplate.content.cloneNode(true);
+      const row = fragment.querySelector("tr");
+      const opens = fragment.querySelectorAll(".student-link, .system-link, .open-record");
+      const evidence = linkedCount(project);
+
+      row.querySelector(".record-number").textContent = String(recordNo).padStart(2, "0");
+      row.querySelector(".student-name").textContent = project.student;
+      row.querySelector(".student-bio").textContent = profileFor(project);
+      row.querySelector(".project-title").textContent = project.title;
+      row.querySelector(".project-summary").textContent = project.summary;
+      row.querySelector(".project-domain").textContent = project.domain;
+      const status = row.querySelector(".status-label");
+      status.textContent = project.status;
+      status.classList.add(statusClass(project.status));
+      const evidenceCell = row.querySelector(".evidence-count");
+      evidenceCell.textContent = `${evidence}/4 linked`;
+      evidenceCell.classList.toggle("has-links", evidence > 0);
+      opens.forEach((button) => button.addEventListener("click", () => openRecord(project, recordNo)));
+      rows.appendChild(fragment);
     });
 
-    resultCount.textContent = `${list.length} ${list.length === 1 ? "project" : "projects"} shown`;
+    resultCount.textContent = `${list.length} of ${projects.length} records shown`;
     emptyState.hidden = list.length !== 0;
   }
 
-  function statusClass(status) {
-    return `status-${status.toLowerCase().replaceAll("·", "").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`;
-  }
-
-  function actionLink(resource) {
-    if (resource.url) {
-      return `<a class="resource-link resource-live" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener noreferrer">${icon(resource.icon)}<span>${escapeHtml(resource.label)}</span><small>Open ↗</small></a>`;
+  function resourceRow(resource) {
+    if (resource.value) {
+      return `<tr><td>${safe(resource.label)}</td><td class="resource-published"><a href="${safe(resource.value)}" target="_blank" rel="noopener noreferrer">Open link ↗</a></td></tr>`;
     }
-    return `<span class="resource-link resource-pending" title="Link not yet supplied">${icon(resource.icon)}<span>${escapeHtml(resource.label)}</span><small>Pending</small></span>`;
+    return `<tr><td>${safe(resource.label)}</td><td class="resource-pending">Pending publication</td></tr>`;
   }
 
-  function studentProfile(project) {
-    if (project.status === "New topic required") return "Final-year Information Systems student awaiting confirmation of a new project topic.";
-    return `Final-year Information Systems student · Project focus: ${project.domain}.`;
-  }
-
-  function openProject(project) {
+  function openRecord(project, recordNo) {
     const linked = linkedCount(project);
     dialogContent.innerHTML = `
-      <div class="dialog-hero">
-        <div class="avatar" aria-hidden="true">${escapeHtml(project.initials)}</div>
+      <section class="record-head">
+        <div class="record-number-large" aria-label="Record ${recordNo}">${String(recordNo).padStart(2, "0")}</div>
         <div>
-          <p class="dialog-student">${escapeHtml(project.student)}</p>
-          <p class="dialog-bio">${escapeHtml(studentProfile(project))}</p>
-          <h2 id="dialogTitle">${escapeHtml(project.title)}</h2>
-          <div class="dialog-tags"><span class="status-badge ${statusClass(project.status)}">${escapeHtml(project.status)}</span><span>${escapeHtml(project.domain)}</span></div>
+          <p class="record-person">${safe(project.student)}</p>
+          <p class="record-bio">${safe(profileFor(project))}</p>
+          <h2 id="dialogTitle">${safe(project.title)}</h2>
+          <div class="record-status-line">
+            <strong class="${statusClass(project.status)}">${safe(project.status)}</strong>
+            <span>${safe(project.domain)}</span>
+          </div>
         </div>
-      </div>
-      <div class="dialog-grid">
-        <section>
-          <p class="detail-kicker">System proposal</p>
-          <p class="detail-copy">${escapeHtml(project.summary)}</p>
-        </section>
-        <section>
-          <p class="detail-kicker">Current stage</p>
-          <p class="detail-copy">${escapeHtml(project.proposalStage)}</p>
-        </section>
-      </div>
-      <section class="project-note">
-        <p class="detail-kicker">Project direction</p>
-        <p>${escapeHtml(project.note)}</p>
       </section>
-      <section class="resources-section" aria-label="Project resources">
-        <div class="resources-heading"><div><p class="detail-kicker">Project resources</p><p>Link status: <strong>${linked} of 4 available</strong></p></div></div>
-        <div class="resource-grid">${linksFor(project).map(actionLink).join("")}</div>
-      </section>
-      <p class="dialog-helper">Links are published only after a student supplies an approved, viewable URL. Do not publish passwords, student credentials or private access keys.</p>`;
+      <div class="record-sections">
+        <section class="record-section">
+          <h3>System proposal</h3>
+          <p>${safe(project.summary)}</p>
+        </section>
+        <section class="record-section record-grid">
+          <div>
+            <p class="data-label">Current project stage</p>
+            <p class="data-value">${safe(project.proposalStage)}</p>
+          </div>
+          <div>
+            <p class="data-label">Project direction</p>
+            <p class="data-value">${safe(project.note)}</p>
+          </div>
+        </section>
+        <section class="record-section">
+          <h3>Evidence register</h3>
+          <table class="resource-register">
+            <thead><tr><th scope="col">Project resource</th><th scope="col">Availability</th></tr></thead>
+            <tbody>${resourcesFor(project).map(resourceRow).join("")}</tbody>
+          </table>
+          <p class="dialog-note">${linked} of 4 project resources are linked in this record. Links should be viewable by the supervisor and should not include private access credentials.</p>
+        </section>
+      </div>`;
 
-    if (typeof dialog.showModal === "function") {
-      dialog.showModal();
-    } else {
-      dialog.setAttribute("open", "");
-    }
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
   }
 
-  function closeProject() {
+  function closeRecord() {
     if (dialog.open && typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
   }
@@ -181,31 +163,20 @@
     searchInput.value = "";
     statusFilter.value = "all";
     domainFilter.value = "all";
-    renderProjects();
+    renderRows();
     searchInput.focus();
   }
 
-  function setTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem("is406-project-directory-theme", theme);
-    themeLabel.textContent = theme === "dark" ? "Light" : "Dark";
-  }
-
-  const savedTheme = localStorage.getItem("is406-project-directory-theme");
-  if (savedTheme === "dark" || savedTheme === "light") setTheme(savedTheme);
-  else setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-
-  themeToggle.addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
-  searchInput.addEventListener("input", renderProjects);
-  statusFilter.addEventListener("change", renderProjects);
-  domainFilter.addEventListener("change", renderProjects);
+  searchInput.addEventListener("input", renderRows);
+  statusFilter.addEventListener("change", renderRows);
+  domainFilter.addEventListener("change", renderRows);
   clearButton.addEventListener("click", clearFilters);
   emptyClear.addEventListener("click", clearFilters);
-  closeDialog.addEventListener("click", closeProject);
-  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeProject(); });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && dialog.open) closeProject(); });
+  closeDialog.addEventListener("click", closeRecord);
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeRecord(); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && dialog.open) closeRecord(); });
 
   populateDomains();
-  renderStats();
-  renderProjects();
+  renderSummary();
+  renderRows();
 })();
