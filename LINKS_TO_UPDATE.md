@@ -1,28 +1,27 @@
-# Student Project Links — Update Checklist
+# Project Link Update Guide
 
-For every student project, collect and validate these four links before publishing them in `assets/projects.js`.
+The project register shows four evidence links for every student record:
 
-| Resource | What to collect | Minimum access requirement |
-|---|---|---|
-| Proposal | Approved proposal PDF or shared document | Supervisor can view |
-| GitHub | Repository URL | Supervisor or organisation can view |
-| Trello | Project board URL | Shows planned, active and completed work |
-| Workspace | Project folder URL | Contains current documentation and deliverables |
+1. **Project proposal** — approved proposal, agreed shared folder, or document location.
+2. **GitHub repository** — the development repository shared with the supervisor.
+3. **Trello board** — the project planning board showing current work.
+4. **Working directory** — the approved folder for forms, designs, testing evidence, and final deliverables.
 
-## Recommended checks before publication
+## Where to update links
 
-- The link opens without requesting a personal password.
-- The resource is the student’s final-year project, not a different class project.
-- The system title and organisation are correctly named.
-- Client-sensitive records, credentials, API keys and personal data are not exposed.
-- The GitHub repository contains a useful `README.md`.
-- The Trello board shows a clear backlog, active work and completed tasks.
-
-## Quick data format
+Open `assets/projects.js` and find the student record. Replace the empty strings only after confirming the URL is viewable by the required staff.
 
 ```js
-proposalUrl: "",
-githubUrl: "",
-trelloUrl: "",
-workspaceUrl: ""
+proposalUrl: "https://...",
+githubUrl: "https://github.com/...",
+trelloUrl: "https://trello.com/b/...",
+workspaceUrl: "https://..."
 ```
+
+Use empty strings for unavailable links:
+
+```js
+proposalUrl: "", githubUrl: "", trelloUrl: "", workspaceUrl: ""
+```
+
+Do not publish passwords, sharing tokens, private credentials, student identification records, or confidential project material.

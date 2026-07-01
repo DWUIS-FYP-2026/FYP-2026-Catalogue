@@ -3,164 +3,183 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="IS406 Final Year Project Directory — student systems, proposals, repositories and project workspaces.">
-  <meta name="theme-color" content="#062b5c">
-  <title>IS406 Final Year Projects | Project Directory</title>
+  <meta name="description" content="IS406 Final Year Project Register — student project proposals, repositories, project boards and working directories.">
+  <meta name="theme-color" content="#12324a">
+  <title>IS406 Final Year Project Register | 2026</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#directory">Skip to project directory</a>
+  <a class="skip-link" href="#project-register">Skip to project register</a>
 
-  <header class="site-header" id="top">
-    <div class="shell nav-wrap">
-      <a class="brand" href="#top" aria-label="IS406 Final Year Projects home">
-        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span>
-          <strong>IS406</strong>
-          <small>Final Year Projects</small>
+  <header class="masthead" id="top">
+    <div class="page-width masthead-inner">
+      <a class="institution-mark" href="#top" aria-label="IS406 Final Year Project Register home">
+        <span class="mark-monogram" aria-hidden="true">IS</span>
+        <span class="mark-text">
+          <strong>Information Systems</strong>
+          <span>Final Year Project Register</span>
         </span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#directory">Project directory</a>
-        <a href="#how-it-works">Project links</a>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
-          <span class="theme-icon" aria-hidden="true">◐</span>
-          <span class="theme-label">Theme</span>
-        </button>
-      </nav>
+      <div class="masthead-meta" aria-label="Register information">
+        <span>IS406</span>
+        <span>2026 Cohort</span>
+        <span id="headerRecordCount">25 records</span>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="shell hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Information Systems · Final Year Project Portfolio</p>
-          <h1>Systems with purpose.<br><em>Projects with evidence.</em></h1>
-          <p class="hero-text">A single directory for IS406 students, approved project proposals, project workspaces, repositories, Trello boards and final project resources.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#directory">Browse projects <span aria-hidden="true">↓</span></a>
-            <a class="button button-quiet" href="#how-it-works">Link guidance</a>
-          </div>
-        </div>
-        <aside class="hero-panel" aria-label="Directory overview">
-          <div class="hero-panel-top">
-            <span class="pulse" aria-hidden="true"></span>
-            <span>2026 Project Cohort</span>
-          </div>
-          <p class="hero-number" id="heroTotal">25</p>
-          <p class="hero-panel-label">student project records</p>
-          <div class="hero-panel-rule"></div>
-          <div class="hero-mini-stats">
-            <div><strong id="heroApproved">18</strong><span>approved</span></div>
-            <div><strong id="heroAction">7</strong><span>requires action</span></div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="overview shell" aria-labelledby="overview-heading">
-      <div class="section-heading compact-heading">
-        <div>
-          <p class="eyebrow">At a glance</p>
-          <h2 id="overview-heading">Project cohort overview</h2>
-        </div>
-        <p>Use the filters to find a student, system proposal or project status.</p>
-      </div>
-      <div class="stat-grid" id="statGrid"></div>
-    </section>
-
-    <section class="directory-section" id="directory" aria-labelledby="directory-heading">
-      <div class="shell">
-        <div class="section-heading">
+    <section class="register-heading" aria-labelledby="page-title">
+      <div class="page-width">
+        <p class="kicker">Academic project records</p>
+        <div class="heading-line">
           <div>
-            <p class="eyebrow">Directory</p>
-            <h2 id="directory-heading">Student project portfolio</h2>
+            <h1 id="page-title">Final Year Project Register</h1>
+            <p class="intro">A working directory of IS406 student systems. Each record brings together the approved proposal direction, student profile, and the evidence links used to track project work.</p>
           </div>
-          <p id="resultCount" aria-live="polite"></p>
-        </div>
-
-        <div class="controls" role="search" aria-label="Search and filter projects">
-          <label class="search-field" for="searchInput">
-            <span class="sr-only">Search projects</span>
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-            <input id="searchInput" type="search" placeholder="Search student, system or organisation…" autocomplete="off">
-          </label>
-          <label class="select-field" for="statusFilter">
-            <span class="sr-only">Filter by proposal status</span>
-            <select id="statusFilter">
-              <option value="all">All proposal statuses</option>
-              <option value="Approved">Approved</option>
-              <option value="Approved · scope confirmation">Approved · scope confirmation</option>
-              <option value="Clarification required">Clarification required</option>
-              <option value="Reassigned">Reassigned</option>
-              <option value="New topic required">New topic required</option>
-            </select>
-          </label>
-          <label class="select-field" for="domainFilter">
-            <span class="sr-only">Filter by system domain</span>
-            <select id="domainFilter"><option value="all">All system domains</option></select>
-          </label>
-          <button class="clear-button" type="button" id="clearFilters">Clear filters</button>
-        </div>
-
-        <div class="project-grid" id="projectGrid"></div>
-        <div class="empty-state" id="emptyState" hidden>
-          <div aria-hidden="true">⌕</div>
-          <h3>No projects found</h3>
-          <p>Try changing your search or clearing the filters.</p>
-          <button class="button button-primary" type="button" id="emptyClear">Clear filters</button>
+          <p class="register-period">Semester 2<br><strong>2026</strong></p>
         </div>
       </div>
     </section>
 
-    <section class="link-guidance" id="how-it-works" aria-labelledby="links-heading">
-      <div class="shell guidance-grid">
-        <div>
-          <p class="eyebrow">Connected project evidence</p>
-          <h2 id="links-heading">Every project should link its working evidence.</h2>
-          <p>Each profile has space for four live resources: the system proposal, GitHub repository, Trello board and project working directory. These links are intentionally shown as pending until the student provides a valid URL.</p>
+    <section class="register-notice" aria-label="Publication notice">
+      <div class="page-width notice-inner">
+        <strong>Publication notice</strong>
+        <p>Project resources are published after the student supplies a viewable link and the link has been checked. This register does not contain passwords, private keys, or confidential material.</p>
+      </div>
+    </section>
+
+    <section class="work-area page-width" id="project-register" aria-labelledby="register-title">
+      <aside class="register-tools" aria-labelledby="find-record-title">
+        <div class="tool-heading">
+          <p class="kicker">Project register</p>
+          <h2 id="find-record-title">Find a record</h2>
         </div>
-        <ol class="guidance-steps">
-          <li><span>01</span><p><strong>Proposal</strong> Upload the approved project proposal to the agreed shared folder.</p></li>
-          <li><span>02</span><p><strong>GitHub</strong> Make the repository viewable by the project supervisor or organisation.</p></li>
-          <li><span>03</span><p><strong>Trello</strong> Share the project board showing planned, active and completed work.</p></li>
-          <li><span>04</span><p><strong>Workspace</strong> Link the approved project folder containing documentation and deliverables.</p></li>
-        </ol>
+
+        <label class="field-label" for="searchInput">Search</label>
+        <div class="search-control">
+          <input id="searchInput" type="search" placeholder="Student, system or sector" autocomplete="off">
+        </div>
+
+        <label class="field-label" for="statusFilter">Proposal decision</label>
+        <select id="statusFilter">
+          <option value="all">All decisions</option>
+          <option value="Approved">Approved</option>
+          <option value="Approved · scope confirmation">Approved · scope confirmation</option>
+          <option value="Clarification required">Clarification required</option>
+          <option value="Reassigned">Reassigned</option>
+          <option value="New topic required">New topic required</option>
+        </select>
+
+        <label class="field-label" for="domainFilter">System sector</label>
+        <select id="domainFilter"><option value="all">All sectors</option></select>
+
+        <button class="text-button" id="clearFilters" type="button">Reset search and filters</button>
+
+        <section class="register-summary" aria-labelledby="summary-title">
+          <h3 id="summary-title">Register summary</h3>
+          <dl id="summaryList"></dl>
+        </section>
+
+        <section class="evidence-key" aria-labelledby="evidence-title">
+          <h3 id="evidence-title">Evidence links</h3>
+          <p>Each project record can hold four working links:</p>
+          <ol>
+            <li>Project proposal</li>
+            <li>GitHub repository</li>
+            <li>Trello board</li>
+            <li>Working directory</li>
+          </ol>
+        </section>
+      </aside>
+
+      <section class="register-content" aria-labelledby="register-title">
+        <div class="register-content-head">
+          <div>
+            <p class="kicker">Current cohort</p>
+            <h2 id="register-title">Student systems and project evidence</h2>
+          </div>
+          <p id="resultCount" class="record-count" aria-live="polite"></p>
+        </div>
+
+        <div class="table-scroll" tabindex="0" aria-label="Scrollable student project register">
+          <table class="project-table">
+            <thead>
+              <tr>
+                <th scope="col" class="col-no">No.</th>
+                <th scope="col">Student</th>
+                <th scope="col">Proposed system</th>
+                <th scope="col">Sector</th>
+                <th scope="col">Proposal decision</th>
+                <th scope="col" class="col-evidence">Evidence</th>
+                <th scope="col"><span class="sr-only">Open record</span></th>
+              </tr>
+            </thead>
+            <tbody id="projectRows"></tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <h3>No matching project record</h3>
+          <p>Try another search term or reset the register filters.</p>
+          <button class="text-button" id="emptyClear" type="button">Reset search and filters</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="submission-guidance" aria-labelledby="guidance-title">
+      <div class="page-width guidance-layout">
+        <div>
+          <p class="kicker">Maintaining the register</p>
+          <h2 id="guidance-title">What students should keep current</h2>
+        </div>
+        <div class="guidance-list">
+          <article>
+            <span>01</span>
+            <div><h3>Proposal record</h3><p>Use the approved proposal document or the agreed project folder link.</p></div>
+          </article>
+          <article>
+            <span>02</span>
+            <div><h3>Development repository</h3><p>Keep the GitHub repository available to the supervisor and include meaningful commits.</p></div>
+          </article>
+          <article>
+            <span>03</span>
+            <div><h3>Project planning board</h3><p>Maintain planned, active, reviewed and completed work in the shared Trello board.</p></div>
+          </article>
+          <article>
+            <span>04</span>
+            <div><h3>Working directory</h3><p>Store signed forms, designs, testing evidence and final deliverables in the agreed directory.</p></div>
+          </article>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="shell footer-wrap">
-      <p><strong>IS406 Final Year Projects</strong><span>Project Directory · 2026</span></p>
-      <a href="#top">Back to top ↑</a>
+    <div class="page-width footer-inner">
+      <p><strong>IS406 Final Year Project Register</strong><span>Information Systems · 2026</span></p>
+      <a href="#top">Return to top</a>
     </div>
   </footer>
 
-  <dialog class="project-dialog" id="projectDialog" aria-labelledby="dialogTitle">
-    <div class="dialog-topbar">
-      <button class="dialog-close" id="closeDialog" type="button" aria-label="Close project details">×</button>
+  <dialog id="projectDialog" class="record-dialog" aria-labelledby="dialogTitle">
+    <div class="dialog-bar">
+      <p>IS406 project record</p>
+      <button id="closeDialog" type="button" aria-label="Close project record">Close</button>
     </div>
     <div id="dialogContent"></div>
   </dialog>
 
-  <template id="projectCardTemplate">
-    <article class="project-card">
-      <div class="card-topline">
-        <span class="status-badge"></span>
-        <span class="project-domain"></span>
-      </div>
-      <div class="card-body">
-        <p class="student-name"></p>
-        <h3 class="project-title"></h3>
-        <p class="project-summary"></p>
-      </div>
-      <div class="card-footer">
-        <div class="resource-state"><span class="resource-dot"></span><span class="resource-text"></span></div>
-        <button class="project-open" type="button">View project <span aria-hidden="true">→</span></button>
-      </div>
-    </article>
+  <template id="projectRowTemplate">
+    <tr>
+      <td class="record-number"></td>
+      <td><button class="student-link" type="button"><span class="student-name"></span><span class="student-bio"></span></button></td>
+      <td><button class="system-link" type="button"><span class="project-title"></span><span class="project-summary"></span></button></td>
+      <td class="project-domain"></td>
+      <td><span class="status-label"></span></td>
+      <td class="evidence-cell"><span class="evidence-count"></span></td>
+      <td class="open-cell"><button class="open-record" type="button">Open<span aria-hidden="true">→</span></button></td>
+    </tr>
   </template>
 
   <script src="assets/projects.js"></script>
