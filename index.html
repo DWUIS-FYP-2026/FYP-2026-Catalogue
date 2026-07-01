@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IS406 Final Year Project Directory — student systems, proposals, repositories and project workspaces.">
+  <meta name="theme-color" content="#062b5c">
+  <title>IS406 Final Year Projects | Project Directory</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#directory">Skip to project directory</a>
+
+  <header class="site-header" id="top">
+    <div class="shell nav-wrap">
+      <a class="brand" href="#top" aria-label="IS406 Final Year Projects home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>
+          <strong>IS406</strong>
+          <small>Final Year Projects</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#directory">Project directory</a>
+        <a href="#how-it-works">Project links</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+          <span class="theme-icon" aria-hidden="true">◐</span>
+          <span class="theme-label">Theme</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Information Systems · Final Year Project Portfolio</p>
+          <h1>Systems with purpose.<br><em>Projects with evidence.</em></h1>
+          <p class="hero-text">A single directory for IS406 students, approved project proposals, project workspaces, repositories, Trello boards and final project resources.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#directory">Browse projects <span aria-hidden="true">↓</span></a>
+            <a class="button button-quiet" href="#how-it-works">Link guidance</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Directory overview">
+          <div class="hero-panel-top">
+            <span class="pulse" aria-hidden="true"></span>
+            <span>2026 Project Cohort</span>
+          </div>
+          <p class="hero-number" id="heroTotal">25</p>
+          <p class="hero-panel-label">student project records</p>
+          <div class="hero-panel-rule"></div>
+          <div class="hero-mini-stats">
+            <div><strong id="heroApproved">18</strong><span>approved</span></div>
+            <div><strong id="heroAction">7</strong><span>requires action</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="overview shell" aria-labelledby="overview-heading">
+      <div class="section-heading compact-heading">
+        <div>
+          <p class="eyebrow">At a glance</p>
+          <h2 id="overview-heading">Project cohort overview</h2>
+        </div>
+        <p>Use the filters to find a student, system proposal or project status.</p>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <section class="directory-section" id="directory" aria-labelledby="directory-heading">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Directory</p>
+            <h2 id="directory-heading">Student project portfolio</h2>
+          </div>
+          <p id="resultCount" aria-live="polite"></p>
+        </div>
+
+        <div class="controls" role="search" aria-label="Search and filter projects">
+          <label class="search-field" for="searchInput">
+            <span class="sr-only">Search projects</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <input id="searchInput" type="search" placeholder="Search student, system or organisation…" autocomplete="off">
+          </label>
+          <label class="select-field" for="statusFilter">
+            <span class="sr-only">Filter by proposal status</span>
+            <select id="statusFilter">
+              <option value="all">All proposal statuses</option>
+              <option value="Approved">Approved</option>
+              <option value="Approved · scope confirmation">Approved · scope confirmation</option>
+              <option value="Clarification required">Clarification required</option>
+              <option value="Reassigned">Reassigned</option>
+              <option value="New topic required">New topic required</option>
+            </select>
+          </label>
+          <label class="select-field" for="domainFilter">
+            <span class="sr-only">Filter by system domain</span>
+            <select id="domainFilter"><option value="all">All system domains</option></select>
+          </label>
+          <button class="clear-button" type="button" id="clearFilters">Clear filters</button>
+        </div>
+
+        <div class="project-grid" id="projectGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <div aria-hidden="true">⌕</div>
+          <h3>No projects found</h3>
+          <p>Try changing your search or clearing the filters.</p>
+          <button class="button button-primary" type="button" id="emptyClear">Clear filters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="link-guidance" id="how-it-works" aria-labelledby="links-heading">
+      <div class="shell guidance-grid">
+        <div>
+          <p class="eyebrow">Connected project evidence</p>
+          <h2 id="links-heading">Every project should link its working evidence.</h2>
+          <p>Each profile has space for four live resources: the system proposal, GitHub repository, Trello board and project working directory. These links are intentionally shown as pending until the student provides a valid URL.</p>
+        </div>
+        <ol class="guidance-steps">
+          <li><span>01</span><p><strong>Proposal</strong> Upload the approved project proposal to the agreed shared folder.</p></li>
+          <li><span>02</span><p><strong>GitHub</strong> Make the repository viewable by the project supervisor or organisation.</p></li>
+          <li><span>03</span><p><strong>Trello</strong> Share the project board showing planned, active and completed work.</p></li>
+          <li><span>04</span><p><strong>Workspace</strong> Link the approved project folder containing documentation and deliverables.</p></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-wrap">
+      <p><strong>IS406 Final Year Projects</strong><span>Project Directory · 2026</span></p>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <dialog class="project-dialog" id="projectDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-topbar">
+      <button class="dialog-close" id="closeDialog" type="button" aria-label="Close project details">×</button>
+    </div>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <template id="projectCardTemplate">
+    <article class="project-card">
+      <div class="card-topline">
+        <span class="status-badge"></span>
+        <span class="project-domain"></span>
+      </div>
+      <div class="card-body">
+        <p class="student-name"></p>
+        <h3 class="project-title"></h3>
+        <p class="project-summary"></p>
+      </div>
+      <div class="card-footer">
+        <div class="resource-state"><span class="resource-dot"></span><span class="resource-text"></span></div>
+        <button class="project-open" type="button">View project <span aria-hidden="true">→</span></button>
+      </div>
+    </article>
+  </template>
+
+  <script src="assets/projects.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
