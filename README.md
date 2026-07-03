@@ -21,8 +21,9 @@ The workspace writes the updated register data to the repository as a normal Git
 1. Give each authorised supervisor write access to this repository.
 2. Each supervisor creates a restricted GitHub fine-grained personal access token for this repository only, with **Contents: Read and write** permission.
 3. Open the published register and select **Supervisor sign in**.
-4. Enter the token, select a project record, update the required fields, then select **Save and commit record**.
-5. Close the workspace when finished. The token is removed from the browser tab.
+4. Select **Add new project record** to create a project, or select an existing record to review and update it.
+5. Select **Save and commit record** to publish an addition or update. To remove an incorrect, duplicate, or withdrawn record, use **Remove record**, type `DELETE`, then confirm.
+6. Close the workspace when finished. The token is removed from the browser tab.
 
 Read [GITHUB_SUPERVISOR_WORKSPACE.md](GITHUB_SUPERVISOR_WORKSPACE.md) before inviting supervisors. It covers permissions, token setup, protected branches, and safeguards.
 
@@ -34,7 +35,7 @@ Each project record contains:
 - `title`, `summary`, `domain`, `status`, `proposalStage`, and `note`;
 - `proposalUrl`, `githubUrl`, `trelloUrl`, and `workspaceUrl`.
 
-The authoritative public data stays in `assets/projects.js`. The integrated supervisor workspace changes it through a controlled form and records every update in GitHub commit history.
+The authoritative public data stays in `assets/projects.js`. The integrated supervisor workspace provides controlled create, read, update, and delete actions through forms and records every committed change in GitHub history.
 
 ## Project files
 

@@ -189,7 +189,7 @@
     <div class="supervisor-dialog-content">
       <section class="workspace-intro" aria-label="Supervisor workspace purpose">
         <p class="kicker">Same register, controlled updates</p>
-        <p>Use this workspace to update the live project register without opening or editing the project data file. Each saved change is committed to the authorised GitHub repository and appears in the public register after GitHub Pages publishes it.</p>
+        <p>Use this workspace to create, review, update, or remove project records without opening or editing the project data file. Each confirmed change is committed to the authorised GitHub repository and appears in the public register after GitHub Pages publishes it.</p>
       </section>
       <section class="workspace-notice" aria-label="Access notice">
         <strong>Supervisor access</strong>
@@ -346,7 +346,20 @@
             <div class="form-actions">
               <button class="primary-button" type="submit">Save and commit record</button>
               <button id="resetFormButton" class="text-button" type="button">Discard unsaved changes</button>
+              <button id="deleteRecordButton" class="danger-button" type="button" hidden>Remove record</button>
             </div>
+            <section id="deleteConfirmPanel" class="delete-confirmation" aria-labelledby="deleteConfirmationTitle" hidden>
+              <p class="delete-confirmation-kicker">Permanent action</p>
+              <h4 id="deleteConfirmationTitle">Remove this project record?</h4>
+              <p><strong id="deleteRecordName"></strong> will be removed from the public register when the GitHub Pages deployment completes. The repository commit history will retain the prior version.</p>
+              <label for="deleteConfirmation">Type <strong>DELETE</strong> to confirm</label>
+              <div class="delete-confirmation-actions">
+                <input id="deleteConfirmation" type="text" autocomplete="off" spellcheck="false" aria-describedby="deleteConfirmationHint">
+                <button id="confirmDeleteButton" class="danger-button" type="button" disabled>Delete permanently</button>
+                <button id="cancelDeleteButton" class="text-button" type="button">Cancel</button>
+              </div>
+              <p id="deleteConfirmationHint" class="field-help">Use this only for a duplicate, withdrawn, or incorrectly created project record. Use the normal editor to change a project instead.</p>
+            </section>
             <p id="formMessage" class="form-note" role="status" hidden></p>
           </form>
         </section>

@@ -25,16 +25,20 @@ Each supervisor must create their own **fine-grained personal access token** in 
 
 An organisation may require an owner to approve a fine-grained token before it can access the organisation repository.
 
-## Update a project record through the interface
+## Manage project records through the interface
 
 1. Open the published project register and select **Supervisor sign in**.
 2. Confirm the repository owner, repository, and branch shown in the connection form.
 3. Paste your personal token and select **Connect to register**.
-4. Search for and select a student record.
-5. Update the required information and checked evidence links.
-6. Optionally add a short commit note.
-7. Select **Save and commit record**.
-8. Wait for the success message. The public GitHub Pages site will reflect the update after its normal deployment completes.
+4. Choose one of the following actions:
+   - **Add project record** to create a new student project. Complete the required student, project, decision, stage, summary, and link fields.
+   - **Edit record** beside an existing entry to update its details, project stage, decision, or evidence links.
+   - **Remove record** only for a duplicate, withdrawn, or incorrectly created record. Type `DELETE` in the confirmation field, then select **Delete permanently**.
+5. Optionally add a short commit note.
+6. Select **Save and commit record** for an addition or update.
+7. Wait for the success message. The public GitHub Pages site will reflect the committed change after its normal deployment completes.
+
+The workspace prevents duplicate student names and preserves the permanent record ID when an existing project is updated. It does not permanently erase history: GitHub retains the prior version in the repository commit history.
 
 ## Operational safeguards
 
@@ -42,7 +46,8 @@ An organisation may require an owner to approve a fine-grained token before it c
 - The workspace checks the current file revision when saving. If another supervisor updates the register first, reload the current register before saving yours.
 - GitHub records the account responsible for each commit in the repository history.
 - Do not add passwords, access tokens, private links, protected documents, grades, student phone numbers, medical information, or any other confidential material.
-- The integrated workspace intentionally does not provide a delete function. Remove a record only through the repository with the appropriate administrative review.
+- Record removal requires a deliberate `DELETE` confirmation. Use it only for a duplicate, withdrawn, or incorrectly created record; update a record instead when the project title, scope, or status has simply changed.
+- GitHub commit history preserves a recoverable version of the register before each removal. Use repository history to restore a record if necessary.
 
 ## Repository configuration
 
