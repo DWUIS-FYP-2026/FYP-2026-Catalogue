@@ -55,3 +55,7 @@ Do not publish passwords, access tokens, private keys, protected reports, studen
 After a supervisor saves, adds, or removes a record, the main project register in the same browser updates immediately. The supervisor workspace now shows **View updated record in main register** so the updated entry can be checked without waiting for a full page reload. Other open tabs in the same browser are also updated.
 
 Visitors on other devices receive the changed file after GitHub Pages completes its deployment; this normally requires a short delay, then a normal browser refresh.
+
+
+## Verified evidence-link publishing
+This version reads the saved project file back from GitHub after every supervisor change and verifies the four evidence-link fields before refreshing the public record. See `VERIFIED_REGISTER_SYNC.md`.
