@@ -1,5 +1,3 @@
-import { isFirebaseConfigured, observeProjects } from "./firebase-service.js";
-
 (() => {
   const baseProjects = Array.isArray(window.PROJECTS) ? window.PROJECTS.map((project) => ({ ...project })) : [];
   let projects = [...baseProjects];
@@ -198,17 +196,6 @@ import { isFirebaseConfigured, observeProjects } from "./firebase-service.js";
 
   rerender();
 
-  if (!isFirebaseConfigured) {
-    registerDataStatus.textContent = "Published register · supervisor connection not configured";
-    return;
-  }
+  registerDataStatus.textContent = "Published register · maintained through the supervisor workspace";
 
-  registerDataStatus.textContent = "Loading shared register…";
-  observeProjects((remoteRecords) => {
-    projects = mergeRemoteProjects(remoteRecords);
-    rerender();
-    registerDataStatus.textContent = remoteRecords.length ? "Shared register · live updates enabled" : "Published register · awaiting first supervisor publication";
-  }, () => {
-    registerDataStatus.textContent = "Published register · shared updates currently unavailable";
-  });
 })();
