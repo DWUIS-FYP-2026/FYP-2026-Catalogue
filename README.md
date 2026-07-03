@@ -48,3 +48,10 @@ The authoritative public data stays in `assets/projects.js`. The integrated supe
 | `GITHUB_SUPERVISOR_WORKSPACE.md` | Setup and operating guide |
 
 Do not publish passwords, access tokens, private keys, protected reports, student grades, personal contact details, or confidential project material.
+
+
+## Immediate main-register sync
+
+After a supervisor saves, adds, or removes a record, the main project register in the same browser updates immediately. The supervisor workspace now shows **View updated record in main register** so the updated entry can be checked without waiting for a full page reload. Other open tabs in the same browser are also updated.
+
+Visitors on other devices receive the changed file after GitHub Pages completes its deployment; this normally requires a short delay, then a normal browser refresh.
