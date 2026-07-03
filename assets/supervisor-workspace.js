@@ -125,7 +125,17 @@
   function parseProjectsFile(source) {
     const match = source.match(/window\.PROJECTS\s*=\s*(\[[\s\S]*\])\s*;?\s*$/);
     if (!match) throw new Error(`The register file at ${DATA_PATH} does not have the expected window.PROJECTS format.`);
-    const records = JSON.parse(match[1]);
+
+    // The original register uses normal JavaScript object keys (for example, id: "...")
+    // while new workspace commits use JSON-style quoted keys. Convert only bare object
+    // property names so both approved register formats can be read without evaluating code.
+    const jsonCompatible = match[1].replace(/([,{]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":');
+    let records;
+    try {
+      records = JSON.parse(jsonCompatible);
+    } catch (error) {
+      throw new Error(`The register data in ${DATA_PATH} could not be read. ${error.message}`);
+    }
     if (!Array.isArray(records)) throw new Error("The register data is not an array of project records.");
     return records.map((record) => ({ ...record }));
   }
