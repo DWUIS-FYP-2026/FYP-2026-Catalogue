@@ -19,16 +19,22 @@
   const dialogContent = document.getElementById("dialogContent");
   const closeDialog = document.getElementById("closeDialog");
   const registerDataStatus = document.getElementById("registerDataStatus");
+  let openRecordId = "";
 
   const safe = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
   }[character]));
 
+  const resourceValue = (project, key, fallbackKeys = []) => {
+    const candidates = [project?.[key], ...fallbackKeys.map((fallback) => project?.[fallback]), project?.links?.[key]];
+    return candidates.find((value) => typeof value === "string" && value.trim())?.trim() || "";
+  };
+
   const resourcesFor = (project) => [
-    { label: "Project proposal", value: project.proposalUrl, type: "Proposal" },
-    { label: "GitHub repository", value: project.githubUrl, type: "GitHub" },
-    { label: "Trello board", value: project.trelloUrl, type: "Trello" },
-    { label: "Working directory", value: project.workspaceUrl, type: "Workspace" }
+    { label: "Project proposal", value: resourceValue(project, "proposalUrl", ["proposal", "proposalLink"]), type: "Proposal" },
+    { label: "GitHub repository", value: resourceValue(project, "githubUrl", ["github", "githubLink"]), type: "GitHub" },
+    { label: "Trello board", value: resourceValue(project, "trelloUrl", ["trello", "trelloLink"]), type: "Trello" },
+    { label: "Working directory", value: resourceValue(project, "workspaceUrl", ["workingDirectoryUrl", "workingDirectory", "workspace"]), type: "Workspace" }
   ];
 
   const linkedCount = (project) => resourcesFor(project).filter((resource) => Boolean(resource.value)).length;
@@ -126,6 +132,7 @@
   }
 
   function openRecord(project, recordNo) {
+    openRecordId = project.id || "";
     const linked = linkedCount(project);
     dialogContent.innerHTML = `
       <section class="record-head">
@@ -170,6 +177,7 @@
   }
 
   function closeRecord() {
+    openRecordId = "";
     if (dialog.open && typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
   }
@@ -190,7 +198,13 @@
 
   function normaliseProjects(records) {
     return records
-      .map((project) => ({ ...project }))
+      .map((project) => ({
+        ...project,
+        proposalUrl: resourceValue(project, "proposalUrl", ["proposal", "proposalLink"]),
+        githubUrl: resourceValue(project, "githubUrl", ["github", "githubLink"]),
+        trelloUrl: resourceValue(project, "trelloUrl", ["trello", "trelloLink"]),
+        workspaceUrl: resourceValue(project, "workspaceUrl", ["workingDirectoryUrl", "workingDirectory", "workspace"])
+      }))
       .sort((a, b) => String(a.student || "").localeCompare(String(b.student || "")));
   }
 
@@ -199,6 +213,11 @@
     projects = normaliseProjects(records);
     window.PROJECTS = projects.map((project) => ({ ...project }));
     rerender();
+    if (openRecordId && dialog.open) {
+      const refreshed = projects.find((project) => project.id === openRecordId);
+      if (refreshed) openRecord(refreshed, projects.indexOf(refreshed) + 1);
+      else closeRecord();
+    }
   }
 
   function publishWorkspaceUpdate(records, changedId = "") {

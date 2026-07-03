@@ -136,12 +136,27 @@
     return btoa(binary);
   }
 
+  function canonicalLink(record, key, aliases = []) {
+    const candidates = [record?.[key], ...aliases.map((alias) => record?.[alias]), record?.links?.[key]];
+    return candidates.find((value) => typeof value === "string" && value.trim())?.trim() || "";
+  }
+
+  function canonicaliseRecord(record) {
+    return {
+      ...record,
+      proposalUrl: canonicalLink(record, "proposalUrl", ["proposal", "proposalLink"]),
+      githubUrl: canonicalLink(record, "githubUrl", ["github", "githubLink"]),
+      trelloUrl: canonicalLink(record, "trelloUrl", ["trello", "trelloLink"]),
+      workspaceUrl: canonicalLink(record, "workspaceUrl", ["workingDirectoryUrl", "workingDirectory", "workspace"])
+    };
+  }
+
   function parseProjectsFile(source) {
     const match = source.match(/window\.PROJECTS\s*=\s*(\[[\s\S]*\])\s*;?\s*$/);
     if (!match) throw new Error(`The register file at ${DATA_PATH} does not have the expected window.PROJECTS format.`);
 
     // The original register uses normal JavaScript object keys (for example, id: "...")
-    // while new workspace commits use JSON-style quoted keys. Convert only bare object
+    // while workspace commits use JSON-style quoted keys. Convert only bare object
     // property names so both approved register formats can be read without evaluating code.
     const jsonCompatible = match[1].replace(/([,{]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":');
     let records;
@@ -151,7 +166,7 @@
       throw new Error(`The register data in ${DATA_PATH} could not be read. ${error.message}`);
     }
     if (!Array.isArray(records)) throw new Error("The register data is not an array of project records.");
-    return records.map((record) => ({ ...record }));
+    return records.map(canonicaliseRecord);
   }
 
   function serialiseProjectsFile(records) {
@@ -332,11 +347,9 @@
     reloadRegisterButton.disabled = true;
     notice(formMessage, "");
     try {
-      const encodedPath = DATA_PATH.split("/").map(encodeURIComponent).join("/");
-      const file = await githubRequest(`/repos/${encodeURIComponent(session.owner)}/${encodeURIComponent(session.repository)}/contents/${encodedPath}?ref=${encodeURIComponent(session.branch)}`);
-      if (!file.content || !file.sha) throw new Error(`GitHub did not return the ${DATA_PATH} file content.`);
-      projects = parseProjectsFile(decodeBase64(file.content)).sort((a, b) => String(a.student || "").localeCompare(String(b.student || "")));
-      dataSha = file.sha;
+      const current = await readRegisterFromGitHub();
+      projects = current.records;
+      dataSha = current.sha;
       lastLoaded.textContent = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date());
       clearForm();
       renderStatusOptions();
@@ -348,6 +361,24 @@
     } finally {
       reloadRegisterButton.disabled = false;
     }
+  }
+
+  async function readRegisterFromGitHub() {
+    const encodedPath = DATA_PATH.split("/").map(encodeURIComponent).join("/");
+    const file = await githubRequest(`/repos/${encodeURIComponent(session.owner)}/${encodeURIComponent(session.repository)}/contents/${encodedPath}?ref=${encodeURIComponent(session.branch)}`);
+    if (!file.content || !file.sha) throw new Error(`GitHub did not return the ${DATA_PATH} file content after saving.`);
+    return {
+      records: parseProjectsFile(decodeBase64(file.content)).sort((a, b) => String(a.student || "").localeCompare(String(b.student || ""))),
+      sha: file.sha
+    };
+  }
+
+  function evidenceSnapshot(record) {
+    return [record?.proposalUrl || "", record?.githubUrl || "", record?.trelloUrl || "", record?.workspaceUrl || ""];
+  }
+
+  function sameEvidence(left, right) {
+    return evidenceSnapshot(left).every((value, index) => value === evidenceSnapshot(right)[index]);
   }
 
   async function commitRegister(nextProjects, message) {
@@ -403,7 +434,18 @@
       const message = commitNote ? `Project register: ${commitNote}` : `${recordAction} project record: ${recordLabel}`;
       notice(formMessage, "Committing the record to GitHub…");
       await commitRegister(nextProjects, message);
-      projects = nextProjects;
+
+      // Read the file back from GitHub and verify the exact record that was written.
+      // The public register is refreshed only from this confirmed copy, not from unsaved form state.
+      const confirmed = await readRegisterFromGitHub();
+      const confirmedRecord = confirmed.records.find((project) => project.id === updated.id);
+      if (!confirmedRecord) throw new Error("GitHub accepted the commit, but the saved project record could not be found when it was read back.");
+      if (!sameEvidence(updated, confirmedRecord)) {
+        throw new Error("GitHub accepted the commit, but the evidence links read back from the register do not match the submitted links. Reload the register and check the record before trying again.");
+      }
+
+      projects = confirmed.records;
+      dataSha = confirmed.sha;
       selectedId = updated.id;
       selectedIsNew = false;
       closeDeleteConfirmation();
@@ -412,7 +454,8 @@
       selectRecord(selectedId);
       refreshPublicRegister(selectedId);
       setPublicRecordAction(selectedId);
-      notice(formMessage, `${recordAction === "Add" ? "New project record added" : "Project record updated"} and committed to GitHub. The main register is updated immediately in this browser; use the button below to view the record. GitHub Pages will publish the update for other visitors after deployment completes.`, "success");
+      const totalLinks = evidenceSnapshot(confirmedRecord).filter(Boolean).length;
+      notice(formMessage, `${recordAction === "Add" ? "New project record added" : "Project record updated"} and verified from GitHub. ${totalLinks}/4 evidence links are saved in the public register. Use the button below to view the confirmed record.`, "success");
     } catch (error) {
       notice(formMessage, error.message || "The record could not be saved. Reload the current register before trying again.", "error");
     } finally {
@@ -451,11 +494,16 @@
       cancelDeleteButton.disabled = true;
       notice(formMessage, "Removing the project record from GitHub…");
       await commitRegister(nextProjects, message);
-      projects = nextProjects;
+      const confirmed = await readRegisterFromGitHub();
+      if (confirmed.records.some((project) => project.id === record.id)) {
+        throw new Error("GitHub accepted the commit, but the deleted record is still present when the register was read back.");
+      }
+      projects = confirmed.records;
+      dataSha = confirmed.sha;
       renderStatusOptions();
       refreshPublicRegister();
       clearForm();
-      notice(formMessage, "Project record removed and committed to GitHub. The main register has refreshed in this browser; GitHub Pages will remove it for other visitors after deployment completes.", "success");
+      notice(formMessage, "Project record removed and verified from GitHub. The main register has refreshed in this browser.", "success");
     } catch (error) {
       notice(formMessage, error.message || "The record could not be removed. Reload the current register before trying again.", "error");
     } finally {
