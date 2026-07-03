@@ -1,8 +1,10 @@
 # IS406 Final Year Project Register
 
-A static, GitHub Pages-ready register for the 2026 IS406 final-year project cohort. It is designed as an academic record directory rather than a dashboard. The main register lists each student, proposed system, sector, proposal decision, and current evidence-link count.
+A GitHub Pages–ready academic register for the 2026 IS406 final-year project cohort. The public register is a read-only directory of students, proposed systems, proposal decisions, project summaries, and checked project-evidence links.
 
-## Publish on GitHub Pages
+The package also includes a **supervisor administration panel** at `admin.html`. It uses Firebase Authentication for supervisor sign-in and Cloud Firestore for shared project-record updates. The staff workspace is deliberately a project record editor—not a generic dashboard.
+
+## Publish the public register on GitHub Pages
 
 1. Create a GitHub repository, for example `is406-final-year-project-register`.
 2. Upload all files in this folder to the repository root.
@@ -10,17 +12,37 @@ A static, GitHub Pages-ready register for the 2026 IS406 final-year project coho
 4. Select **Deploy from a branch**, choose `main`, select `/ (root)`, then save.
 5. GitHub will provide the public website address after deployment.
 
-## Update project information
+The public website works immediately using the supplied project records. It becomes a live shared register when Firebase is configured and the initial records are published from the administration page.
 
-Project data is in `assets/projects.js`. Each student record contains:
+## Enable supervisor login and shared updates
 
-- `student` and `initials`
-- `title`, `summary`, and `domain`
-- `status`, `proposalStage`, and `note`
-- `proposalUrl`, `githubUrl`, `trelloUrl`, and `workspaceUrl`
+Read **[SUPERVISOR_ADMIN_SETUP.md](SUPERVISOR_ADMIN_SETUP.md)** before inviting supervisors. It explains how to:
 
-Leave an URL field empty until a valid, viewable link has been supplied. Do not add passwords, access tokens, student credentials, or links to confidential information.
+- connect the site to Firebase in `assets/firebase-config.js`;
+- enable email/password sign-in;
+- create supervisor accounts and give them an active `supervisors/{UID}` role record;
+- publish the supplied `firestore.rules` access controls;
+- seed the current 25 student records into the shared project collection.
 
-## Design approach
+## Project record fields
 
-The interface uses a dense, searchable register with a record-detail view. It avoids decorative dashboards, analytics, generic cards, gradients, and inflated statistics. Status colour is used only to distinguish project decisions, while the resource register shows whether each required evidence link is available.
+Each project record contains:
+
+- `student` and `initials`;
+- `title`, `summary`, `domain`, `status`, `proposalStage`, and `note`;
+- `proposalUrl`, `githubUrl`, `trelloUrl`, and `workspaceUrl`.
+
+Use the supervisor page to edit shared records after Firebase is configured. The static `assets/projects.js` file remains the initial/public fallback data source.
+
+Do not publish passwords, access tokens, private keys, protected reports, student grades, personal contact details, or confidential project material.
+
+## Project files
+
+| File | Purpose |
+|---|---|
+| `index.html` | Public student project register |
+| `admin.html` | Supervisor-only sign-in and project editor |
+| `assets/firebase-config.js` | Firebase web-app settings to complete |
+| `assets/firebase-service.js` | Shared auth and Firestore integration |
+| `firestore.rules` | Firestore access-control rules |
+| `SUPERVISOR_ADMIN_SETUP.md` | Secure setup guide |

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Supervisor administration for the IS406 Final Year Project Register.">
+  <meta name="theme-color" content="#12324a">
+  <title>Supervisor Register Administration | IS406</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="admin-body">
+  <a class="skip-link" href="#admin-main">Skip to administration workspace</a>
+
+  <header class="masthead admin-masthead">
+    <div class="page-width masthead-inner">
+      <a class="institution-mark" href="index.html" aria-label="Return to the public IS406 project register">
+        <span class="mark-monogram" aria-hidden="true">IS</span>
+        <span class="mark-text">
+          <strong>Information Systems</strong>
+          <span>Supervisor Register Administration</span>
+        </span>
+      </a>
+      <nav class="admin-top-nav" aria-label="Register navigation">
+        <a href="index.html">Public register</a>
+        <span id="signedInAs" hidden></span>
+        <button id="signOutButton" type="button" hidden>Sign out</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="admin-main">
+    <section class="admin-heading">
+      <div class="page-width">
+        <p class="kicker">Controlled record maintenance</p>
+        <h1>Supervisor project register</h1>
+        <p class="intro">Use this workspace to maintain student project records and publish verified project evidence links. Every saved change is written to the shared register.</p>
+      </div>
+    </section>
+
+    <section class="admin-notice" aria-label="Access notice">
+      <div class="page-width notice-inner">
+        <strong>Supervisor access</strong>
+        <p>Only authorised supervisors can make changes. Do not enter student passwords, confidential documents, private keys, or restricted project material into this register.</p>
+      </div>
+    </section>
+
+    <section id="setupView" class="page-width admin-setup" hidden>
+      <p class="kicker">Connection required</p>
+      <h2>Connect the shared register before inviting supervisors</h2>
+      <p>This website package contains the sign-in and editing interface, but Firebase has not yet been configured. Complete the setup guide, then return here to sign in.</p>
+      <ol>
+        <li>Create a Firebase project and register this website as a web app.</li>
+        <li>Enable Email/Password sign-in and create the supervisor accounts.</li>
+        <li>Set the Firestore rules supplied with this project.</li>
+        <li>Copy the Firebase configuration into <code>assets/firebase-config.js</code>.</li>
+        <li>Create an active supervisor record, sign in, then seed the supplied 25 project records.</li>
+      </ol>
+      <p><a class="action-link" href="SUPERVISOR_ADMIN_SETUP.md">Read the supervisor setup guide</a></p>
+    </section>
+
+    <section id="loginView" class="page-width login-layout">
+      <div class="login-intro">
+        <p class="kicker">Authorised users only</p>
+        <h2>Sign in to maintain the register</h2>
+        <p>Supervisor accounts are created and controlled by the register administrator. Your access is checked again by the database before any edit is accepted.</p>
+        <p class="small-note">Need access? Ask the IS406 register administrator to create your account and assign your supervisor profile.</p>
+      </div>
+      <form id="loginForm" class="login-form" novalidate>
+        <label for="email">Supervisor email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="primary-button" type="submit">Sign in</button>
+        <p id="loginMessage" class="form-note" role="status" hidden></p>
+      </form>
+    </section>
+
+    <section id="workspaceView" class="page-width admin-workspace" hidden>
+      <div class="workspace-header">
+        <div>
+          <p class="kicker">Project records</p>
+          <h2>Review and update the current cohort</h2>
+        </div>
+        <p id="adminCount" class="record-count"></p>
+      </div>
+
+      <div class="seed-area">
+        <div>
+          <strong>Initial publication</strong>
+          <p>On first use, publish the supplied 25 project records to create the shared register. This does not create student accounts.</p>
+        </div>
+        <button id="seedButton" class="secondary-button" type="button">Publish supplied records</button>
+        <p id="seedNotice" class="form-note" role="status" hidden></p>
+      </div>
+
+      <div class="admin-work-grid">
+        <aside class="admin-list-panel" aria-labelledby="project-list-title">
+          <div class="tool-heading">
+            <p class="kicker">Record selection</p>
+            <h3 id="project-list-title">Choose a project</h3>
+          </div>
+          <label class="field-label" for="adminSearch">Search register</label>
+          <div class="search-control"><input id="adminSearch" type="search" placeholder="Student, system or sector" autocomplete="off"></div>
+          <label class="field-label" for="adminStatusFilter">Proposal decision</label>
+          <select id="adminStatusFilter"></select>
+          <div class="admin-table-scroll" tabindex="0" aria-label="Scrollable supervisor project record list">
+            <table class="admin-project-table">
+              <thead><tr><th>No.</th><th>Student and system</th><th>Decision</th><th>Links</th><th><span class="sr-only">Edit</span></th></tr></thead>
+              <tbody id="adminRows"></tbody>
+            </table>
+          </div>
+        </aside>
+
+        <section class="editor-panel" aria-labelledby="formTitle">
+          <div class="editor-heading">
+            <p class="kicker">Record editor</p>
+            <h3 id="formTitle">Select a project record</h3>
+          </div>
+          <p id="emptyForm" class="editor-empty">Select a project from the register to review or update its details.</p>
+          <form id="recordForm" class="record-form" novalidate>
+            <input type="hidden" name="id" id="id">
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="student">Student name <span aria-hidden="true">*</span></label>
+                <input id="student" name="student" type="text" required>
+              </div>
+              <div>
+                <label for="initials">Initials</label>
+                <input id="initials" name="initials" type="text" maxlength="6">
+              </div>
+            </div>
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="title">Proposed system <span aria-hidden="true">*</span></label>
+                <input id="title" name="title" type="text" required>
+              </div>
+              <div>
+                <label for="domain">System sector <span aria-hidden="true">*</span></label>
+                <input id="domain" name="domain" type="text" required>
+              </div>
+            </div>
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="status">Proposal decision <span aria-hidden="true">*</span></label>
+                <select id="status" name="status" required>
+                  <option value="Approved">Approved</option>
+                  <option value="Approved · scope confirmation">Approved · scope confirmation</option>
+                  <option value="Clarification required">Clarification required</option>
+                  <option value="Reassigned">Reassigned</option>
+                  <option value="New topic required">New topic required</option>
+                </select>
+              </div>
+              <div>
+                <label for="proposalStage">Current project stage <span aria-hidden="true">*</span></label>
+                <input id="proposalStage" name="proposalStage" type="text" required>
+              </div>
+            </div>
+            <div>
+              <label for="summary">System proposal summary <span aria-hidden="true">*</span></label>
+              <textarea id="summary" name="summary" rows="4" required></textarea>
+            </div>
+            <div>
+              <label for="note">Supervisor direction or next action</label>
+              <textarea id="note" name="note" rows="4"></textarea>
+            </div>
+            <fieldset class="link-fieldset">
+              <legend>Published evidence links</legend>
+              <p>Use complete viewable links only. Leave a field blank until it has been checked.</p>
+              <div class="form-grid">
+                <div><label for="proposalUrl">Project proposal</label><input id="proposalUrl" name="proposalUrl" type="url" placeholder="https://…"></div>
+                <div><label for="githubUrl">GitHub repository</label><input id="githubUrl" name="githubUrl" type="url" placeholder="https://github.com/…"></div>
+                <div><label for="trelloUrl">Trello board</label><input id="trelloUrl" name="trelloUrl" type="url" placeholder="https://trello.com/…"></div>
+                <div><label for="workspaceUrl">Working directory</label><input id="workspaceUrl" name="workspaceUrl" type="url" placeholder="https://…"></div>
+              </div>
+            </fieldset>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Save project record</button>
+              <button id="resetFormButton" class="text-button" type="button">Discard unsaved changes</button>
+            </div>
+            <p id="formMessage" class="form-note" role="status" hidden></p>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-width footer-inner">
+      <p><strong>IS406 Final Year Project Register</strong><span>Supervisor administration · 2026</span></p>
+      <a href="index.html">Open public register</a>
+    </div>
+  </footer>
+
+  <script src="assets/projects.js"></script>
+  <script src="assets/firebase-config.js"></script>
+  <script type="module" src="assets/admin.js"></script>
+</body>
+</html>
