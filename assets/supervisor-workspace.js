@@ -37,6 +37,12 @@
   const formTitle = document.getElementById("formTitle");
   const emptyForm = document.getElementById("emptyForm");
   const resetFormButton = document.getElementById("resetFormButton");
+  const deleteRecordButton = document.getElementById("deleteRecordButton");
+  const deleteConfirmPanel = document.getElementById("deleteConfirmPanel");
+  const deleteRecordName = document.getElementById("deleteRecordName");
+  const deleteConfirmation = document.getElementById("deleteConfirmation");
+  const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+  const cancelDeleteButton = document.getElementById("cancelDeleteButton");
 
   let session = null;
   let projects = [];
@@ -202,6 +208,16 @@
     recordForm.querySelectorAll("input, textarea, select, button").forEach((element) => {
       element.disabled = !enabled;
     });
+    if (deleteRecordButton) deleteRecordButton.disabled = !enabled || selectedIsNew || !selectedId;
+    if (confirmDeleteButton) confirmDeleteButton.disabled = true;
+  }
+
+  function closeDeleteConfirmation() {
+    if (!deleteConfirmPanel) return;
+    deleteConfirmPanel.hidden = true;
+    deleteConfirmation.value = "";
+    confirmDeleteButton.disabled = true;
+    deleteRecordButton.hidden = !selectedId || selectedIsNew;
   }
 
   function clearForm() {
@@ -210,6 +226,7 @@
     recordForm.reset();
     formTitle.textContent = "Select a project record";
     emptyForm.hidden = false;
+    closeDeleteConfirmation();
     setFormEnabled(false);
     notice(formMessage, "");
     renderList();
@@ -227,9 +244,13 @@
     selectedIsNew = false;
     formTitle.textContent = `Edit record ${recordDisplayNumber(record)} · ${record.student}`;
     emptyForm.hidden = true;
+    closeDeleteConfirmation();
     setFormEnabled(true);
+    deleteRecordButton.hidden = false;
+    deleteRecordButton.disabled = false;
     notice(formMessage, "");
-    ["id", "student", "initials", "title", "domain", "status", "proposalStage", "summary", "note", "proposalUrl", "githubUrl", "trelloUrl", "workspaceUrl", "commitNote"].forEach((key) => setValue(key, record[key]));
+    ["id", "student", "initials", "title", "domain", "status", "proposalStage", "summary", "note", "proposalUrl", "githubUrl", "trelloUrl", "workspaceUrl"].forEach((key) => setValue(key, record[key]));
+    setValue("commitNote", "");
     renderList();
     document.getElementById("student").focus();
   }
@@ -240,10 +261,12 @@
     recordForm.reset();
     setValue("status", "Clarification required");
     setValue("proposalStage", "Initial project record required");
-    formTitle.textContent = "Add project record";
+    formTitle.textContent = "Add new project record";
     emptyForm.hidden = true;
+    closeDeleteConfirmation();
     setFormEnabled(true);
-    notice(formMessage, "Add the required details, then save and commit the new record.");
+    deleteRecordButton.hidden = true;
+    notice(formMessage, "Complete the required fields, then save and commit the new project record.");
     renderList();
     document.getElementById("student").focus();
   }
@@ -285,6 +308,11 @@
     if (!project.initials) {
       project.initials = project.student.split(/\s+/).map((part) => part[0]).join("").slice(0, 6).toUpperCase();
     }
+    const duplicateStudent = projects.find((existing) =>
+      existing.id !== selectedId &&
+      String(existing.student || "").trim().toLocaleLowerCase() === project.student.toLocaleLowerCase()
+    );
+    if (duplicateStudent) throw new Error("A project record already exists for this student. Update the existing record instead of creating a duplicate.");
     return project;
   }
 
@@ -311,6 +339,26 @@
     }
   }
 
+  async function commitRegister(nextProjects, message) {
+    const encodedPath = DATA_PATH.split("/").map(encodeURIComponent).join("/");
+    const result = await githubRequest(`/repos/${encodeURIComponent(session.owner)}/${encodeURIComponent(session.repository)}/contents/${encodedPath}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        content: encodeBase64(serialiseProjectsFile(nextProjects)),
+        branch: session.branch,
+        sha: dataSha
+      })
+    });
+    dataSha = result?.content?.sha || dataSha;
+  }
+
+  function refreshPublicRegister() {
+    window.PROJECTS = projects.map((project) => ({ ...project }));
+    window.dispatchEvent(new CustomEvent("fyp-projects-updated", { detail: { projects: window.PROJECTS } }));
+  }
+
   async function saveCurrentRecord(event) {
     event.preventDefault();
     if (!session) return;
@@ -321,45 +369,87 @@
       const commitNote = updated.commitNote;
       delete updated.commitNote;
 
+      let nextProjects;
+      let recordAction;
       if (selectedIsNew) {
         updated.id = createId(updated.student);
-        projects.push(updated);
-        projects.sort((a, b) => a.student.localeCompare(b.student));
-        selectedId = updated.id;
+        nextProjects = [...projects, updated].sort((a, b) => a.student.localeCompare(b.student));
+        recordAction = "Add";
       } else {
         if (!selectedId || updated.id !== selectedId) throw new Error("The permanent record ID cannot be changed.");
         const index = projects.findIndex((project) => project.id === selectedId);
         if (index < 0) throw new Error("This project record could not be found in the loaded register.");
-        projects[index] = updated;
+        nextProjects = projects.map((project, projectIndex) => projectIndex === index ? updated : project);
+        recordAction = "Update";
       }
 
       const recordLabel = `${updated.student} — ${updated.title}`;
-      const message = commitNote ? `Project register: ${commitNote}` : `Update project record: ${recordLabel}`;
-      notice(formMessage, "Committing the update to GitHub…");
-      const encodedPath = DATA_PATH.split("/").map(encodeURIComponent).join("/");
-      const result = await githubRequest(`/repos/${encodeURIComponent(session.owner)}/${encodeURIComponent(session.repository)}/contents/${encodedPath}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message,
-          content: encodeBase64(serialiseProjectsFile(projects)),
-          branch: session.branch,
-          sha: dataSha
-        })
-      });
-      dataSha = result?.content?.sha || dataSha;
+      const message = commitNote ? `Project register: ${commitNote}` : `${recordAction} project record: ${recordLabel}`;
+      notice(formMessage, "Committing the record to GitHub…");
+      await commitRegister(nextProjects, message);
+      projects = nextProjects;
+      selectedId = updated.id;
       selectedIsNew = false;
+      closeDeleteConfirmation();
       renderStatusOptions();
       renderList();
       selectRecord(selectedId);
-      window.PROJECTS = projects.map((project) => ({ ...project }));
-      window.dispatchEvent(new CustomEvent("fyp-projects-updated", { detail: { projects: window.PROJECTS } }));
-      notice(formMessage, "Record committed to GitHub. The register shown behind this workspace has been refreshed; GitHub Pages will publish the change publicly after deployment completes.", "success");
+      refreshPublicRegister();
+      notice(formMessage, `${recordAction === "Add" ? "New project record added" : "Project record updated"} and committed to GitHub. The public register has refreshed in this browser; GitHub Pages will publish it after deployment completes.`, "success");
     } catch (error) {
       notice(formMessage, error.message || "The record could not be saved. Reload the current register before trying again.", "error");
     } finally {
       saveButton.disabled = false;
     }
+  }
+
+  function openDeleteConfirmation() {
+    if (!selectedId || selectedIsNew) return;
+    const record = projects.find((project) => project.id === selectedId);
+    if (!record) return;
+    deleteRecordName.textContent = `${record.student} — ${record.title}`;
+    deleteConfirmation.value = "";
+    deleteConfirmPanel.hidden = false;
+    deleteRecordButton.hidden = true;
+    confirmDeleteButton.disabled = true;
+    deleteConfirmation.focus();
+  }
+
+  async function deleteSelectedRecord() {
+    if (!session || !selectedId || selectedIsNew) return;
+    if (deleteConfirmation.value.trim().toUpperCase() !== "DELETE") {
+      notice(formMessage, 'Type DELETE in the confirmation field before removing this record.', "error");
+      return;
+    }
+    const record = projects.find((project) => project.id === selectedId);
+    if (!record) {
+      notice(formMessage, "This project record could not be found in the loaded register.", "error");
+      return;
+    }
+    const commitNote = String(recordForm.elements.namedItem("commitNote")?.value || "").trim();
+    const message = commitNote ? `Project register: ${commitNote}` : `Remove project record: ${record.student} — ${record.title}`;
+    const nextProjects = projects.filter((project) => project.id !== selectedId);
+    try {
+      confirmDeleteButton.disabled = true;
+      cancelDeleteButton.disabled = true;
+      notice(formMessage, "Removing the project record from GitHub…");
+      await commitRegister(nextProjects, message);
+      projects = nextProjects;
+      renderStatusOptions();
+      refreshPublicRegister();
+      clearForm();
+      notice(formMessage, "Project record removed and committed to GitHub. GitHub Pages will remove it from the public register after deployment completes.", "success");
+    } catch (error) {
+      notice(formMessage, error.message || "The record could not be removed. Reload the current register before trying again.", "error");
+    } finally {
+      cancelDeleteButton.disabled = false;
+      updateDeleteConfirmationState();
+    }
+  }
+
+  function updateDeleteConfirmationState() {
+    if (!confirmDeleteButton) return;
+    confirmDeleteButton.disabled = deleteConfirmation.value.trim().toUpperCase() !== "DELETE";
   }
 
   async function connect(event) {
@@ -443,6 +533,13 @@
   resetFormButton.addEventListener("click", () => {
     if (selectedIsNew) beginNewRecord();
     else if (selectedId) selectRecord(selectedId);
+  });
+  deleteRecordButton.addEventListener("click", openDeleteConfirmation);
+  deleteConfirmation.addEventListener("input", updateDeleteConfirmationState);
+  confirmDeleteButton.addEventListener("click", deleteSelectedRecord);
+  cancelDeleteButton.addEventListener("click", () => {
+    closeDeleteConfirmation();
+    notice(formMessage, "");
   });
 
   initialiseConnectionFields();
