@@ -1,21 +1,24 @@
-# Project Link Update Guide
+# Updating Project Evidence Links
 
-Supervisors update project links from **`admin.html`** after Firebase supervisor access has been configured. This keeps the public register and supervisor records synchronized.
+Supervisors update project links through **`admin.html`**. The workspace provides a form interface; supervisors do not need to edit `assets/projects.js` directly.
 
-Each record can hold four checked evidence links:
+## Update process
 
-1. **Project proposal** — approved proposal, agreed shared folder, or document location.
-2. **GitHub repository** — the development repository shared with the supervisor.
-3. **Trello board** — the project planning board showing current work.
-4. **Working directory** — the approved folder for forms, designs, testing evidence, and final deliverables.
+1. Open the published supervisor workspace.
+2. Connect using a GitHub fine-grained personal access token that has access to this repository and **Contents: Read and write** permission.
+3. Search for the student record.
+4. Add or update the checked Proposal, GitHub, Trello, and Working Directory URLs.
+5. Select **Save and commit record**.
+6. Wait for GitHub Pages to publish the new commit.
 
-## Link standard
+## Link standards
 
-- Use complete `https://` links only.
-- Verify that the required staff can open the link before publishing it.
-- Leave a link blank until it is ready to publish.
-- Do not publish passwords, sharing tokens, private credentials, personal student records, grades, or confidential materials.
+- Use a complete `https://` link.
+- Confirm that a supervisor can open the link before publishing it.
+- Do not use private credentials in a URL.
+- Do not publish passwords, tokens, private keys, student grades, or restricted project material.
+- Leave a link blank until it is ready for publication.
 
-## Before Firebase is configured
+## Data source
 
-The starting records are kept in `assets/projects.js`. They are published into the shared Firestore register when an authorised supervisor uses the **Publish supplied records** button in `admin.html`.
+The public project data remains in `assets/projects.js`. It is maintained by the supervisor workspace and committed to the repository so GitHub history records the change.

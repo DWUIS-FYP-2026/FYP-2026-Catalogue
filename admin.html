@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Supervisor administration for the IS406 Final Year Project Register.">
+  <meta name="description" content="Supervisor workspace for maintaining the IS406 Final Year Project Register through the GitHub repository.">
   <meta name="theme-color" content="#12324a">
-  <title>Supervisor Register Administration | IS406</title>
+  <title>Supervisor Workspace | IS406 Project Register</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body class="admin-body">
-  <a class="skip-link" href="#admin-main">Skip to administration workspace</a>
+  <a class="skip-link" href="#admin-main">Skip to supervisor workspace</a>
 
   <header class="masthead admin-masthead">
     <div class="page-width masthead-inner">
@@ -17,13 +17,13 @@
         <span class="mark-monogram" aria-hidden="true">IS</span>
         <span class="mark-text">
           <strong>Information Systems</strong>
-          <span>Supervisor Register Administration</span>
+          <span>Supervisor Project Workspace</span>
         </span>
       </a>
       <nav class="admin-top-nav" aria-label="Register navigation">
         <a href="index.html">Public register</a>
-        <span id="signedInAs" hidden></span>
-        <button id="signOutButton" type="button" hidden>Sign out</button>
+        <span id="connectedAs" hidden></span>
+        <button id="disconnectButton" type="button" hidden>Disconnect</button>
       </nav>
     </div>
   </header>
@@ -33,45 +33,48 @@
       <div class="page-width">
         <p class="kicker">Controlled record maintenance</p>
         <h1>Supervisor project register</h1>
-        <p class="intro">Use this workspace to maintain student project records and publish verified project evidence links. Every saved change is written to the shared register.</p>
+        <p class="intro">Update student project records through a structured workspace. When you save a record, the workspace commits the updated register file directly to the authorised GitHub repository. No separate database service is used.</p>
       </div>
     </section>
 
     <section class="admin-notice" aria-label="Access notice">
       <div class="page-width notice-inner">
         <strong>Supervisor access</strong>
-        <p>Only authorised supervisors can make changes. Do not enter student passwords, confidential documents, private keys, or restricted project material into this register.</p>
+        <p>Use a GitHub account that has permission to update this repository. The workspace does not store a password or access token. Do not publish student passwords, private keys, protected reports, grades, or confidential material.</p>
       </div>
     </section>
 
-    <section id="setupView" class="page-width admin-setup" hidden>
-      <p class="kicker">Connection required</p>
-      <h2>Connect the shared register before inviting supervisors</h2>
-      <p>This website package contains the sign-in and editing interface, but Firebase has not yet been configured. Complete the setup guide, then return here to sign in.</p>
-      <ol>
-        <li>Create a Firebase project and register this website as a web app.</li>
-        <li>Enable Email/Password sign-in and create the supervisor accounts.</li>
-        <li>Set the Firestore rules supplied with this project.</li>
-        <li>Copy the Firebase configuration into <code>assets/firebase-config.js</code>.</li>
-        <li>Create an active supervisor record, sign in, then seed the supplied 25 project records.</li>
-      </ol>
-      <p><a class="action-link" href="SUPERVISOR_ADMIN_SETUP.md">Read the supervisor setup guide</a></p>
-    </section>
-
-    <section id="loginView" class="page-width login-layout">
-      <div class="login-intro">
-        <p class="kicker">Authorised users only</p>
-        <h2>Sign in to maintain the register</h2>
-        <p>Supervisor accounts are created and controlled by the register administrator. Your access is checked again by the database before any edit is accepted.</p>
-        <p class="small-note">Need access? Ask the IS406 register administrator to create your account and assign your supervisor profile.</p>
+    <section id="connectView" class="page-width connect-layout">
+      <div class="connect-intro">
+        <p class="kicker">GitHub repository connection</p>
+        <h2>Connect before editing records</h2>
+        <p>This is an editing interface for the project register—not a text editor. It loads the current student data from <code>assets/projects.js</code>, lets you edit a selected record through the form, and commits the update to GitHub.</p>
+        <p class="small-note">Each supervisor uses their own GitHub fine-grained personal access token with access limited to this repository. The token is held in this browser tab only and is discarded when you disconnect or close the tab.</p>
+        <p class="small-note"><a class="action-link" href="GITHUB_SUPERVISOR_WORKSPACE.md">Read the one-time supervisor connection guide</a></p>
       </div>
-      <form id="loginForm" class="login-form" novalidate>
-        <label for="email">Supervisor email address</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required>
-        <button class="primary-button" type="submit">Sign in</button>
-        <p id="loginMessage" class="form-note" role="status" hidden></p>
+
+      <form id="connectForm" class="connect-form" novalidate>
+        <div class="form-grid compact-grid">
+          <div>
+            <label for="repoOwner">Organisation or owner</label>
+            <input id="repoOwner" name="repoOwner" type="text" autocomplete="organization" required>
+          </div>
+          <div>
+            <label for="repoName">Repository</label>
+            <input id="repoName" name="repoName" type="text" autocomplete="off" required>
+          </div>
+        </div>
+        <div>
+          <label for="repoBranch">Branch</label>
+          <input id="repoBranch" name="repoBranch" type="text" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="githubToken">GitHub access token</label>
+          <input id="githubToken" name="githubToken" type="password" autocomplete="off" spellcheck="false" required>
+          <p class="field-help">Create a fine-grained token for this repository only, with <strong>Contents: Read and write</strong>. Do not paste a token into any public document, email, or source file.</p>
+        </div>
+        <button class="primary-button" type="submit">Connect to register</button>
+        <p id="connectMessage" class="form-note" role="status" hidden></p>
       </form>
     </section>
 
@@ -84,14 +87,21 @@
         <p id="adminCount" class="record-count"></p>
       </div>
 
-      <div class="seed-area">
+      <section class="repository-strip" aria-label="Connected repository details">
         <div>
-          <strong>Initial publication</strong>
-          <p>On first use, publish the supplied 25 project records to create the shared register. This does not create student accounts.</p>
+          <strong id="repositoryLabel">Repository</strong>
+          <span id="repositoryPath"></span>
         </div>
-        <button id="seedButton" class="secondary-button" type="button">Publish supplied records</button>
-        <p id="seedNotice" class="form-note" role="status" hidden></p>
-      </div>
+        <div>
+          <strong>Data file</strong>
+          <span id="dataFileLabel">assets/projects.js</span>
+        </div>
+        <div>
+          <strong>Last loaded</strong>
+          <span id="lastLoaded">—</span>
+        </div>
+        <button id="reloadRegisterButton" class="secondary-button" type="button">Reload current register</button>
+      </section>
 
       <div class="admin-work-grid">
         <aside class="admin-list-panel" aria-labelledby="project-list-title">
@@ -103,6 +113,9 @@
           <div class="search-control"><input id="adminSearch" type="search" placeholder="Student, system or sector" autocomplete="off"></div>
           <label class="field-label" for="adminStatusFilter">Proposal decision</label>
           <select id="adminStatusFilter"></select>
+          <div class="list-actions">
+            <button id="newRecordButton" class="secondary-button" type="button">Add project record</button>
+          </div>
           <div class="admin-table-scroll" tabindex="0" aria-label="Scrollable supervisor project record list">
             <table class="admin-project-table">
               <thead><tr><th>No.</th><th>Student and system</th><th>Decision</th><th>Links</th><th><span class="sr-only">Edit</span></th></tr></thead>
@@ -173,8 +186,13 @@
                 <div><label for="workspaceUrl">Working directory</label><input id="workspaceUrl" name="workspaceUrl" type="url" placeholder="https://…"></div>
               </div>
             </fieldset>
+            <div>
+              <label for="commitNote">Commit note</label>
+              <input id="commitNote" name="commitNote" type="text" maxlength="140" placeholder="Optional note for the GitHub history">
+              <p class="field-help">GitHub records the exact account that commits this change. This note becomes part of the commit message.</p>
+            </div>
             <div class="form-actions">
-              <button class="primary-button" type="submit">Save project record</button>
+              <button class="primary-button" type="submit">Save and commit record</button>
               <button id="resetFormButton" class="text-button" type="button">Discard unsaved changes</button>
             </div>
             <p id="formMessage" class="form-note" role="status" hidden></p>
@@ -186,13 +204,13 @@
 
   <footer class="site-footer">
     <div class="page-width footer-inner">
-      <p><strong>IS406 Final Year Project Register</strong><span>Supervisor administration · 2026</span></p>
+      <p><strong>IS406 Final Year Project Register</strong><span>Supervisor workspace · 2026</span></p>
       <a href="index.html">Open public register</a>
     </div>
   </footer>
 
   <script src="assets/projects.js"></script>
-  <script src="assets/firebase-config.js"></script>
-  <script type="module" src="assets/admin.js"></script>
+  <script src="assets/repository-config.js"></script>
+  <script src="assets/admin.js"></script>
 </body>
 </html>
