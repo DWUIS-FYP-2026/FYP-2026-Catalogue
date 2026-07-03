@@ -82,6 +82,21 @@ window.PROJECTS = [
     "workspaceUrl": ""
   },
   {
+    "id": "cecilia-lumba",
+    "student": "Cecilia LUMBA",
+    "initials": "CL",
+    "title": "TBC",
+    "domain": "TBC",
+    "status": "Clarification required",
+    "proposalStage": "Initial project record required",
+    "summary": "Proposal to be confirmed",
+    "note": "",
+    "proposalUrl": "",
+    "githubUrl": "",
+    "trelloUrl": "",
+    "workspaceUrl": ""
+  },
+  {
     "id": "cherobim-ambian",
     "student": "Cherobim Ambian",
     "initials": "CA",
