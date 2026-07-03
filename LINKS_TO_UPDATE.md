@@ -1,6 +1,6 @@
 # Updating Project Evidence Links
 
-Supervisors update project links through **`admin.html`**. The workspace provides a form interface; supervisors do not need to edit `assets/projects.js` directly.
+Supervisors update project links through **`the integrated supervisor workspace`**. The workspace provides a form interface; supervisors do not need to edit `assets/projects.js` directly.
 
 ## Update process
 

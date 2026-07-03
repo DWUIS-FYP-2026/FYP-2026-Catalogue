@@ -1,6 +1,6 @@
 # Supervisor Workspace: GitHub Repository Setup
 
-The supervisor workspace in `admin.html` is a structured editor for the public project register. Supervisors use form fields to update student records; the page writes the updated `assets/projects.js` file back to this repository as a normal GitHub commit.
+The integrated supervisor workspace opened from **Supervisor sign in** on `index.html` is a structured editor for the public project register. Supervisors use form fields to update student records; the page writes the updated `assets/projects.js` file back to this repository as a normal GitHub commit.
 
 No separate database or website password is used.
 
@@ -27,7 +27,7 @@ An organisation may require an owner to approve a fine-grained token before it c
 
 ## Update a project record through the interface
 
-1. Open `admin.html` from the published website.
+1. Open the published project register and select **Supervisor sign in**.
 2. Confirm the repository owner, repository, and branch shown in the connection form.
 3. Paste your personal token and select **Connect to register**.
 4. Search for and select a student record.
@@ -42,7 +42,7 @@ An organisation may require an owner to approve a fine-grained token before it c
 - The workspace checks the current file revision when saving. If another supervisor updates the register first, reload the current register before saving yours.
 - GitHub records the account responsible for each commit in the repository history.
 - Do not add passwords, access tokens, private links, protected documents, grades, student phone numbers, medical information, or any other confidential material.
-- The workspace intentionally does not provide a delete function. Remove a record only through the repository with the appropriate administrative review.
+- The integrated workspace intentionally does not provide a delete function. Remove a record only through the repository with the appropriate administrative review.
 
 ## Repository configuration
 

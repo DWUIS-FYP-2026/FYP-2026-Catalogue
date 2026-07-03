@@ -24,7 +24,7 @@
         <span>IS406</span>
         <span>2026 Cohort</span>
         <span id="headerRecordCount">25 records</span>
-        <a class="supervisor-link" href="admin.html">Supervisor workspace</a>
+        <button class="supervisor-link" id="openSupervisorWorkspace" type="button">Supervisor sign in</button>
       </div>
     </div>
   </header>
@@ -172,6 +172,189 @@
     <div id="dialogContent"></div>
   </dialog>
 
+
+
+  <dialog id="supervisorDialog" class="supervisor-dialog" aria-labelledby="supervisorDialogTitle">
+    <div class="workspace-dialog-bar">
+      <div>
+        <p class="workspace-label">IS406 controlled record maintenance</p>
+        <h2 id="supervisorDialogTitle">Supervisor workspace</h2>
+      </div>
+      <div class="workspace-dialog-actions">
+        <span id="connectedAs" class="connected-as" hidden></span>
+        <button id="disconnectButton" class="dialog-action" type="button" hidden>Disconnect</button>
+        <button id="closeSupervisorWorkspace" class="dialog-action" type="button">Close workspace</button>
+      </div>
+    </div>
+    <div class="supervisor-dialog-content">
+      <section class="workspace-intro" aria-label="Supervisor workspace purpose">
+        <p class="kicker">Same register, controlled updates</p>
+        <p>Use this workspace to update the live project register without opening or editing the project data file. Each saved change is committed to the authorised GitHub repository and appears in the public register after GitHub Pages publishes it.</p>
+      </section>
+      <section class="workspace-notice" aria-label="Access notice">
+        <strong>Supervisor access</strong>
+        <p>Use only a GitHub account with permission to update this repository. Do not add passwords, private keys, confidential reports, grades, or private student information.</p>
+      </section>
+
+    <section id="connectView" class="connect-layout">
+      <div class="connect-intro">
+        <p class="kicker">GitHub repository connection</p>
+        <h2>Connect before editing records</h2>
+        <p>This is an editing interface for the project register—not a text editor. It loads the current student data from <code>assets/projects.js</code>, lets you edit a selected record through the form, and commits the update to GitHub.</p>
+        <p class="small-note">Each supervisor uses their own GitHub fine-grained personal access token with access limited to this repository. The token is held in this browser tab only and is discarded when you disconnect or close the tab.</p>
+        <p class="small-note"><a class="action-link" href="GITHUB_SUPERVISOR_WORKSPACE.md">Read the supervisor connection guide</a></p>
+      </div>
+
+      <form id="connectForm" class="connect-form" novalidate>
+        <div class="form-grid compact-grid">
+          <div>
+            <label for="repoOwner">Organisation or owner</label>
+            <input id="repoOwner" name="repoOwner" type="text" autocomplete="organization" required>
+          </div>
+          <div>
+            <label for="repoName">Repository</label>
+            <input id="repoName" name="repoName" type="text" autocomplete="off" required>
+          </div>
+        </div>
+        <div>
+          <label for="repoBranch">Branch</label>
+          <input id="repoBranch" name="repoBranch" type="text" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="githubToken">GitHub access token</label>
+          <input id="githubToken" name="githubToken" type="password" autocomplete="off" spellcheck="false" required>
+          <p class="field-help">Create a fine-grained token for this repository only, with <strong>Contents: Read and write</strong>. Do not paste a token into any public document, email, or source file.</p>
+        </div>
+        <button class="primary-button" type="submit">Connect to register</button>
+        <p id="connectMessage" class="form-note" role="status" hidden></p>
+      </form>
+    </section>
+
+    <section id="workspaceView" class="admin-workspace" hidden>
+      <div class="workspace-header">
+        <div>
+          <p class="kicker">Project records</p>
+          <h2>Review and update the current cohort</h2>
+        </div>
+        <p id="adminCount" class="record-count"></p>
+      </div>
+
+      <section class="repository-strip" aria-label="Connected repository details">
+        <div>
+          <strong id="repositoryLabel">Repository</strong>
+          <span id="repositoryPath"></span>
+        </div>
+        <div>
+          <strong>Data file</strong>
+          <span id="dataFileLabel">assets/projects.js</span>
+        </div>
+        <div>
+          <strong>Last loaded</strong>
+          <span id="lastLoaded">—</span>
+        </div>
+        <button id="reloadRegisterButton" class="secondary-button" type="button">Reload current register</button>
+      </section>
+
+      <div class="admin-work-grid">
+        <aside class="admin-list-panel" aria-labelledby="project-list-title">
+          <div class="tool-heading">
+            <p class="kicker">Record selection</p>
+            <h3 id="project-list-title">Choose a project</h3>
+          </div>
+          <label class="field-label" for="adminSearch">Search register</label>
+          <div class="search-control"><input id="adminSearch" type="search" placeholder="Student, system or sector" autocomplete="off"></div>
+          <label class="field-label" for="adminStatusFilter">Proposal decision</label>
+          <select id="adminStatusFilter"></select>
+          <div class="list-actions">
+            <button id="newRecordButton" class="secondary-button" type="button">Add project record</button>
+          </div>
+          <div class="admin-table-scroll" tabindex="0" aria-label="Scrollable supervisor project record list">
+            <table class="admin-project-table">
+              <thead><tr><th>No.</th><th>Student and system</th><th>Decision</th><th>Links</th><th><span class="sr-only">Edit</span></th></tr></thead>
+              <tbody id="adminRows"></tbody>
+            </table>
+          </div>
+        </aside>
+
+        <section class="editor-panel" aria-labelledby="formTitle">
+          <div class="editor-heading">
+            <p class="kicker">Record editor</p>
+            <h3 id="formTitle">Select a project record</h3>
+          </div>
+          <p id="emptyForm" class="editor-empty">Select a project from the register to review or update its details.</p>
+          <form id="recordForm" class="record-form" novalidate>
+            <input type="hidden" name="id" id="id">
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="student">Student name <span aria-hidden="true">*</span></label>
+                <input id="student" name="student" type="text" required>
+              </div>
+              <div>
+                <label for="initials">Initials</label>
+                <input id="initials" name="initials" type="text" maxlength="6">
+              </div>
+            </div>
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="title">Proposed system <span aria-hidden="true">*</span></label>
+                <input id="title" name="title" type="text" required>
+              </div>
+              <div>
+                <label for="domain">System sector <span aria-hidden="true">*</span></label>
+                <input id="domain" name="domain" type="text" required>
+              </div>
+            </div>
+            <div class="form-grid compact-grid">
+              <div>
+                <label for="status">Proposal decision <span aria-hidden="true">*</span></label>
+                <select id="status" name="status" required>
+                  <option value="Approved">Approved</option>
+                  <option value="Approved · scope confirmation">Approved · scope confirmation</option>
+                  <option value="Clarification required">Clarification required</option>
+                  <option value="Reassigned">Reassigned</option>
+                  <option value="New topic required">New topic required</option>
+                </select>
+              </div>
+              <div>
+                <label for="proposalStage">Current project stage <span aria-hidden="true">*</span></label>
+                <input id="proposalStage" name="proposalStage" type="text" required>
+              </div>
+            </div>
+            <div>
+              <label for="summary">System proposal summary <span aria-hidden="true">*</span></label>
+              <textarea id="summary" name="summary" rows="4" required></textarea>
+            </div>
+            <div>
+              <label for="note">Supervisor direction or next action</label>
+              <textarea id="note" name="note" rows="4"></textarea>
+            </div>
+            <fieldset class="link-fieldset">
+              <legend>Published evidence links</legend>
+              <p>Use complete viewable links only. Leave a field blank until it has been checked.</p>
+              <div class="form-grid">
+                <div><label for="proposalUrl">Project proposal</label><input id="proposalUrl" name="proposalUrl" type="url" placeholder="https://…"></div>
+                <div><label for="githubUrl">GitHub repository</label><input id="githubUrl" name="githubUrl" type="url" placeholder="https://github.com/…"></div>
+                <div><label for="trelloUrl">Trello board</label><input id="trelloUrl" name="trelloUrl" type="url" placeholder="https://trello.com/…"></div>
+                <div><label for="workspaceUrl">Working directory</label><input id="workspaceUrl" name="workspaceUrl" type="url" placeholder="https://…"></div>
+              </div>
+            </fieldset>
+            <div>
+              <label for="commitNote">Commit note</label>
+              <input id="commitNote" name="commitNote" type="text" maxlength="140" placeholder="Optional note for the GitHub history">
+              <p class="field-help">GitHub records the exact account that commits this change. This note becomes part of the commit message.</p>
+            </div>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Save and commit record</button>
+              <button id="resetFormButton" class="text-button" type="button">Discard unsaved changes</button>
+            </div>
+            <p id="formMessage" class="form-note" role="status" hidden></p>
+          </form>
+        </section>
+      </div>
+    </section>
+    </div>
+  </dialog>
+
   <template id="projectRowTemplate">
     <tr>
       <td class="record-number"></td>
@@ -185,6 +368,8 @@
   </template>
 
   <script src="assets/projects.js"></script>
+  <script src="assets/repository-config.js"></script>
   <script src="assets/app.js"></script>
+  <script src="assets/supervisor-workspace.js"></script>
 </body>
 </html>
