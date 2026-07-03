@@ -1,5 +1,8 @@
+import { isFirebaseConfigured, observeProjects } from "./firebase-service.js";
+
 (() => {
-  const projects = Array.isArray(window.PROJECTS) ? window.PROJECTS : [];
+  const baseProjects = Array.isArray(window.PROJECTS) ? window.PROJECTS.map((project) => ({ ...project })) : [];
+  let projects = [...baseProjects];
   const rows = document.getElementById("projectRows");
   const rowTemplate = document.getElementById("projectRowTemplate");
   const searchInput = document.getElementById("searchInput");
@@ -14,6 +17,7 @@
   const dialog = document.getElementById("projectDialog");
   const dialogContent = document.getElementById("dialogContent");
   const closeDialog = document.getElementById("closeDialog");
+  const registerDataStatus = document.getElementById("registerDataStatus");
 
   const safe = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
@@ -27,15 +31,24 @@
   ];
 
   const linkedCount = (project) => resourcesFor(project).filter((resource) => Boolean(resource.value)).length;
-
   const statusClass = (status) => `status-${String(status).toLowerCase().replaceAll("·", "").replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "")}`;
-
   const profileFor = (project) => {
     if (project.status === "New topic required") return "Final-year Information Systems student awaiting a confirmed project topic.";
-    return `Final-year Information Systems student developing a ${project.domain.toLowerCase()} system.`;
+    return `Final-year Information Systems student developing a ${String(project.domain || "project").toLowerCase()} system.`;
   };
 
+  function mergeRemoteProjects(remoteRecords) {
+    const remoteById = new Map(remoteRecords.map((project) => [project.id, project]));
+    const combined = baseProjects.map((project) => ({ ...project, ...(remoteById.get(project.id) || {}) }));
+    remoteRecords.forEach((project) => {
+      if (!baseProjects.some((base) => base.id === project.id)) combined.push(project);
+    });
+    return combined.sort((a, b) => a.student.localeCompare(b.student));
+  }
+
   function populateDomains() {
+    const currentValue = domainFilter.value;
+    domainFilter.innerHTML = '<option value="all">All sectors</option>';
     [...new Set(projects.map((project) => project.domain).filter(Boolean))]
       .sort((a, b) => a.localeCompare(b))
       .forEach((domain) => {
@@ -44,6 +57,7 @@
         option.textContent = domain;
         domainFilter.appendChild(option);
       });
+    domainFilter.value = [...domainFilter.options].some((option) => option.value === currentValue) ? currentValue : "all";
   }
 
   function renderSummary() {
@@ -167,6 +181,12 @@
     searchInput.focus();
   }
 
+  function rerender() {
+    populateDomains();
+    renderSummary();
+    renderRows();
+  }
+
   searchInput.addEventListener("input", renderRows);
   statusFilter.addEventListener("change", renderRows);
   domainFilter.addEventListener("change", renderRows);
@@ -176,7 +196,19 @@
   dialog.addEventListener("click", (event) => { if (event.target === dialog) closeRecord(); });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && dialog.open) closeRecord(); });
 
-  populateDomains();
-  renderSummary();
-  renderRows();
+  rerender();
+
+  if (!isFirebaseConfigured) {
+    registerDataStatus.textContent = "Published register · supervisor connection not configured";
+    return;
+  }
+
+  registerDataStatus.textContent = "Loading shared register…";
+  observeProjects((remoteRecords) => {
+    projects = mergeRemoteProjects(remoteRecords);
+    rerender();
+    registerDataStatus.textContent = remoteRecords.length ? "Shared register · live updates enabled" : "Published register · awaiting first supervisor publication";
+  }, () => {
+    registerDataStatus.textContent = "Published register · shared updates currently unavailable";
+  });
 })();
