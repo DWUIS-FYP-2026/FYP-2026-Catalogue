@@ -43,6 +43,8 @@
   const deleteConfirmation = document.getElementById("deleteConfirmation");
   const confirmDeleteButton = document.getElementById("confirmDeleteButton");
   const cancelDeleteButton = document.getElementById("cancelDeleteButton");
+  const workspacePublicAction = document.getElementById("workspacePublicAction");
+  const showPublicRecordButton = document.getElementById("showPublicRecordButton");
 
   let session = null;
   let projects = [];
@@ -58,6 +60,12 @@
     target.textContent = message;
     target.className = `form-note${type ? ` ${type}` : ""}`;
     target.hidden = !message;
+  }
+
+  function setPublicRecordAction(recordId = "") {
+    if (!workspacePublicAction || !showPublicRecordButton) return;
+    workspacePublicAction.hidden = !recordId;
+    showPublicRecordButton.dataset.recordId = recordId || "";
   }
 
   function deriveRepository() {
@@ -229,6 +237,7 @@
     closeDeleteConfirmation();
     setFormEnabled(false);
     notice(formMessage, "");
+    setPublicRecordAction();
     renderList();
   }
 
@@ -249,6 +258,7 @@
     deleteRecordButton.hidden = false;
     deleteRecordButton.disabled = false;
     notice(formMessage, "");
+    setPublicRecordAction();
     ["id", "student", "initials", "title", "domain", "status", "proposalStage", "summary", "note", "proposalUrl", "githubUrl", "trelloUrl", "workspaceUrl"].forEach((key) => setValue(key, record[key]));
     setValue("commitNote", "");
     renderList();
@@ -267,6 +277,7 @@
     setFormEnabled(true);
     deleteRecordButton.hidden = true;
     notice(formMessage, "Complete the required fields, then save and commit the new project record.");
+    setPublicRecordAction();
     renderList();
     document.getElementById("student").focus();
   }
@@ -354,9 +365,14 @@
     dataSha = result?.content?.sha || dataSha;
   }
 
-  function refreshPublicRegister() {
-    window.PROJECTS = projects.map((project) => ({ ...project }));
-    window.dispatchEvent(new CustomEvent("fyp-projects-updated", { detail: { projects: window.PROJECTS } }));
+  function refreshPublicRegister(changedId = "") {
+    const updatedRecords = projects.map((project) => ({ ...project }));
+    if (window.IS406ProjectRegister?.replaceRecords) {
+      window.IS406ProjectRegister.replaceRecords(updatedRecords, { changedId, publish: true });
+      return;
+    }
+    window.PROJECTS = updatedRecords;
+    window.dispatchEvent(new CustomEvent("fyp-projects-updated", { detail: { projects: updatedRecords } }));
   }
 
   async function saveCurrentRecord(event) {
@@ -394,8 +410,9 @@
       renderStatusOptions();
       renderList();
       selectRecord(selectedId);
-      refreshPublicRegister();
-      notice(formMessage, `${recordAction === "Add" ? "New project record added" : "Project record updated"} and committed to GitHub. The public register has refreshed in this browser; GitHub Pages will publish it after deployment completes.`, "success");
+      refreshPublicRegister(selectedId);
+      setPublicRecordAction(selectedId);
+      notice(formMessage, `${recordAction === "Add" ? "New project record added" : "Project record updated"} and committed to GitHub. The main register is updated immediately in this browser; use the button below to view the record. GitHub Pages will publish the update for other visitors after deployment completes.`, "success");
     } catch (error) {
       notice(formMessage, error.message || "The record could not be saved. Reload the current register before trying again.", "error");
     } finally {
@@ -438,7 +455,7 @@
       renderStatusOptions();
       refreshPublicRegister();
       clearForm();
-      notice(formMessage, "Project record removed and committed to GitHub. GitHub Pages will remove it from the public register after deployment completes.", "success");
+      notice(formMessage, "Project record removed and committed to GitHub. The main register has refreshed in this browser; GitHub Pages will remove it for other visitors after deployment completes.", "success");
     } catch (error) {
       notice(formMessage, error.message || "The record could not be removed. Reload the current register before trying again.", "error");
     } finally {
@@ -540,6 +557,12 @@
   cancelDeleteButton.addEventListener("click", () => {
     closeDeleteConfirmation();
     notice(formMessage, "");
+  });
+  showPublicRecordButton?.addEventListener("click", () => {
+    const recordId = showPublicRecordButton.dataset.recordId;
+    if (!recordId) return;
+    closeWorkspace();
+    window.setTimeout(() => window.IS406ProjectRegister?.showRecord(recordId), 80);
   });
 
   initialiseConnectionFields();

@@ -394,3 +394,26 @@ select { padding: 8px 9px; }
   .form-actions { flex-wrap: wrap; }
   .delete-confirmation-actions { grid-template-columns: 1fr; align-items: stretch; }
 }
+
+
+/* Immediate public-register hand-off after a supervisor commit. */
+.workspace-public-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line, #c7cecb);
+}
+.workspace-public-action p {
+  margin: 0;
+  color: var(--muted, #586975);
+  font-size: .94rem;
+}
+@media (max-width: 720px) {
+  .workspace-public-action {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -1,6 +1,9 @@
 (() => {
   const baseProjects = Array.isArray(window.PROJECTS) ? window.PROJECTS.map((project) => ({ ...project })) : [];
   let projects = [...baseProjects];
+  const LIVE_SYNC_KEY = "is406-project-register-live-sync";
+  const LIVE_SYNC_TTL_MS = 15 * 60 * 1000;
+  const liveChannel = "BroadcastChannel" in window ? new BroadcastChannel("is406-project-register") : null;
   const rows = document.getElementById("projectRows");
   const rowTemplate = document.getElementById("projectRowTemplate");
   const searchInput = document.getElementById("searchInput");
@@ -185,6 +188,75 @@
     renderRows();
   }
 
+  function normaliseProjects(records) {
+    return records
+      .map((project) => ({ ...project }))
+      .sort((a, b) => String(a.student || "").localeCompare(String(b.student || "")));
+  }
+
+  function applyWorkspaceUpdate(records) {
+    if (!Array.isArray(records)) return;
+    projects = normaliseProjects(records);
+    window.PROJECTS = projects.map((project) => ({ ...project }));
+    rerender();
+  }
+
+  function publishWorkspaceUpdate(records, changedId = "") {
+    const payload = {
+      records: records.map((project) => ({ ...project })),
+      changedId,
+      savedAt: Date.now()
+    };
+    try {
+      window.localStorage.setItem(LIVE_SYNC_KEY, JSON.stringify(payload));
+    } catch (_) {
+      // Local storage can be unavailable in some private browsing configurations.
+    }
+    try {
+      liveChannel?.postMessage(payload);
+    } catch (_) {
+      // The current page still receives the immediate in-page update.
+    }
+  }
+
+  function recentWorkspaceUpdate() {
+    try {
+      const raw = window.localStorage.getItem(LIVE_SYNC_KEY);
+      if (!raw) return null;
+      const payload = JSON.parse(raw);
+      if (!Array.isArray(payload.records) || !Number.isFinite(payload.savedAt)) return null;
+      if (Date.now() - payload.savedAt > LIVE_SYNC_TTL_MS) {
+        window.localStorage.removeItem(LIVE_SYNC_KEY);
+        return null;
+      }
+      return payload;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function showRecordFromRegister(id) {
+    const project = projects.find((item) => item.id === id);
+    if (!project) return false;
+    clearFilters();
+    const recordNo = projects.indexOf(project) + 1;
+    openRecord(project, recordNo);
+    return true;
+  }
+
+  window.IS406ProjectRegister = {
+    replaceRecords(records, options = {}) {
+      applyWorkspaceUpdate(records);
+      if (options.publish) publishWorkspaceUpdate(records, options.changedId || "");
+    },
+    showRecord(id) {
+      return showRecordFromRegister(id);
+    },
+    getRecords() {
+      return projects.map((project) => ({ ...project }));
+    }
+  };
+
   searchInput.addEventListener("input", renderRows);
   statusFilter.addEventListener("change", renderRows);
   domainFilter.addEventListener("change", renderRows);
@@ -197,11 +269,29 @@
   window.addEventListener("fyp-projects-updated", (event) => {
     const updatedRecords = event?.detail?.projects;
     if (!Array.isArray(updatedRecords)) return;
-    projects = updatedRecords.map((project) => ({ ...project })).sort((a, b) => String(a.student || "").localeCompare(String(b.student || "")));
-    rerender();
+    applyWorkspaceUpdate(updatedRecords);
   });
 
-  rerender();
+  window.addEventListener("storage", (event) => {
+    if (event.key !== LIVE_SYNC_KEY || !event.newValue) return;
+    try {
+      const payload = JSON.parse(event.newValue);
+      if (Array.isArray(payload.records)) applyWorkspaceUpdate(payload.records);
+    } catch (_) {
+      // Ignore malformed browser storage data.
+    }
+  });
+
+  if (liveChannel) {
+    liveChannel.addEventListener("message", (event) => {
+      const payload = event?.data;
+      if (Array.isArray(payload?.records)) applyWorkspaceUpdate(payload.records);
+    });
+  }
+
+  const pendingUpdate = recentWorkspaceUpdate();
+  if (pendingUpdate) applyWorkspaceUpdate(pendingUpdate.records);
+  else rerender();
 
   registerDataStatus.textContent = "Published register · maintained through the supervisor workspace";
 
