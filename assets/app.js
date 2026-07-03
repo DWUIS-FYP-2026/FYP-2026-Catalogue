@@ -194,6 +194,13 @@
   dialog.addEventListener("click", (event) => { if (event.target === dialog) closeRecord(); });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && dialog.open) closeRecord(); });
 
+  window.addEventListener("fyp-projects-updated", (event) => {
+    const updatedRecords = event?.detail?.projects;
+    if (!Array.isArray(updatedRecords)) return;
+    projects = updatedRecords.map((project) => ({ ...project })).sort((a, b) => String(a.student || "").localeCompare(String(b.student || "")));
+    rerender();
+  });
+
   rerender();
 
   registerDataStatus.textContent = "Published register · maintained through the supervisor workspace";

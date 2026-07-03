@@ -259,3 +259,97 @@ select { padding: 8px 9px; }
   .connect-form { padding: 19px; }
   .repository-strip { grid-template-columns: 1fr; align-items: start; }
 }
+
+/* Integrated supervisor workspace: same public register, controlled edit layer */
+.masthead-meta .supervisor-link {
+  padding: 0 0 1px 12px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid rgba(255,255,255,.35);
+  border-bottom: 1px solid rgba(255,255,255,.72);
+  border-radius: 0;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-underline-offset: 3px;
+}
+.masthead-meta .supervisor-link:hover { border-bottom-color: #fff; }
+.masthead-meta .supervisor-link:focus-visible,
+.dialog-action:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
+.supervisor-dialog {
+  width: min(1420px, calc(100% - 24px));
+  height: min(94vh, 1080px);
+  max-height: 94vh;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--navy-deep);
+  border-radius: 0;
+  box-shadow: 0 22px 60px rgba(4,18,27,.42);
+}
+.supervisor-dialog::backdrop { background: rgba(8,22,32,.68); }
+.workspace-dialog-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 72px;
+  padding: 12px 24px;
+  color: #fff;
+  background: var(--navy);
+  border-bottom: 4px solid var(--gold);
+}
+.workspace-label { margin: 0 0 2px; color: rgba(255,255,255,.72); font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.workspace-dialog-bar h2 { margin: 0; color: #fff; font-family: Georgia, "Times New Roman", serif; font-size: 1.36rem; font-weight: 500; line-height: 1.08; }
+.workspace-dialog-actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
+.connected-as { color: rgba(255,255,255,.8); font-size: .74rem; }
+.dialog-action { padding: 2px 0; color: #fff; background: transparent; border: 0; border-bottom: 1px solid rgba(255,255,255,.72); border-radius: 0; font-size: .77rem; font-weight: 700; text-underline-offset: 3px; }
+.dialog-action:hover { border-color: #fff; }
+.supervisor-dialog-content { height: calc(100% - 72px); overflow: auto; }
+.workspace-intro { padding: 28px 32px 23px; background: var(--paper); border-bottom: 1px solid var(--line); }
+.workspace-intro .kicker { margin-bottom: 8px; }
+.workspace-intro > p:not(.kicker) { max-width: 930px; margin: 0; color: var(--ink-soft); font-size: .91rem; }
+.workspace-notice { display: grid; grid-template-columns: 175px minmax(0, 1fr); gap: 18px; padding: 12px 32px; background: #eaf0ed; border-bottom: 1px solid #c4d3cb; }
+.workspace-notice strong { color: var(--green); font-size: .69rem; letter-spacing: .08em; text-transform: uppercase; }
+.workspace-notice p { margin: 0; color: #365049; font-size: .8rem; }
+.supervisor-dialog .connect-layout { max-width: 1260px; margin: 0 auto; padding: 42px 32px 48px; }
+.supervisor-dialog .admin-workspace { max-width: 1360px; margin: 0 auto; padding: 31px 32px 44px; }
+.supervisor-dialog .admin-work-grid { grid-template-columns: minmax(390px, .84fr) minmax(0, 1.3fr); }
+.supervisor-dialog .admin-table-scroll { max-height: 510px; }
+.supervisor-dialog .editor-panel { margin-bottom: 4px; }
+
+@media (max-width: 980px) {
+  .supervisor-dialog { width: min(100% - 12px, 900px); height: 96vh; max-height: 96vh; }
+  .workspace-dialog-bar { align-items: start; flex-direction: column; gap: 10px; padding: 13px 18px; }
+  .workspace-dialog-actions { width: 100%; justify-content: space-between; }
+  .supervisor-dialog-content { height: calc(100% - 114px); }
+  .workspace-intro { padding: 23px 20px 19px; }
+  .workspace-notice { grid-template-columns: 1fr; gap: 5px; padding: 12px 20px; }
+  .supervisor-dialog .connect-layout,
+  .supervisor-dialog .admin-workspace { padding-left: 20px; padding-right: 20px; }
+  .supervisor-dialog .admin-work-grid { grid-template-columns: 1fr; }
+  .supervisor-dialog .admin-table-scroll { max-height: 360px; }
+}
+
+@media (max-width: 720px) {
+  .masthead-inner { align-items: flex-start; flex-direction: column; gap: 15px; padding: 18px 0; }
+  .masthead-meta { width: 100%; flex-wrap: wrap; font-size: .68rem; }
+  .masthead-meta span { padding: 0 8px; }
+  .masthead-meta .supervisor-link { padding-left: 8px; }
+  .workspace-dialog-actions { gap: 11px; align-items: center; }
+  .connected-as { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .workspace-intro > p:not(.kicker) { font-size: .84rem; }
+  .supervisor-dialog .connect-layout,
+  .supervisor-dialog .admin-workspace { padding-left: 15px; padding-right: 15px; }
+}
+
+@media print {
+  .supervisor-dialog { display: none !important; }
+}
