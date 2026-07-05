@@ -326,15 +326,15 @@ window.PROJECTS = [
     "student": "Samantha Mako",
     "initials": "SM",
     "title": "Partnership Information Management System",
-    "summary": "A revised project to support structured partnership information management for the Partnership Office.",
     "domain": "University Operations",
     "status": "Reassigned",
     "proposalStage": "Confirm revised scope and develop proposal",
+    "summary": "A revised project to support structured partnership information management for the Partnership Office.",
     "note": "The original generic HRM proposal was not approved. Develop the revised project scope with the Partnership Office and document its key information workflows.",
     "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230406_DWUMASNP.git",
+    "trelloUrl": "https://trello.com/b/Tx7xetst/my-trello-board",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Samantha%20MAKO?csf=1&web=1&e=g38qoi"
   },
   {
     "id": "solomon-polomon",
