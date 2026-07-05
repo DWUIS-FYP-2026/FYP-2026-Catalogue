@@ -71,15 +71,15 @@ window.PROJECTS = [
     "student": "Bossie Tatut",
     "initials": "BT",
     "title": "CENTRAK — Census Tracking System",
-    "summary": "A proposed system for capturing and maintaining census or civil-registration information.",
     "domain": "Government & Civic",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A proposed system for capturing and maintaining census or civil-registration information.",
     "note": "Differentiate the project from existing collection tools, define the MVP and consider offline-first collection, validation and scalable tracking requirements.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bossie%20TATUT/Project%20Proposal?csf=1&web=1&e=h27RZC",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230408_EVACS.git",
+    "trelloUrl": "https://trello.com/b/NoKm50tb",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bossie%20TATUT?csf=1&web=1&e=mRuRTR"
   },
   {
     "id": "cherobim-ambian",
