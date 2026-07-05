@@ -221,15 +221,15 @@ window.PROJECTS = [
     "student": "Lisa Numbunda",
     "initials": "LN",
     "title": "Community ConnecHub",
-    "summary": "A ward-level collaboration and service-delivery system proposed for Madang Urban LLG, with an initial Ward 5 pilot.",
     "domain": "Community & Local Government",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A ward-level collaboration and service-delivery system proposed for Madang Urban LLG, with an initial Ward 5 pilot.",
     "note": "Define the system custodian and deliver a focused Ward 5 MVP. Limit the first release to core workflow, announcements, notifications and reporting.",
     "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/210529_CCH.git",
+    "trelloUrl": "https://trello.com/b/6a41c57c4014d50b6bfe5863",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Lisa%20NUMBUNDA?csf=1&web=1&e=7n93kh"
   },
   {
     "id": "maino-kajoka",
