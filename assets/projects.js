@@ -166,7 +166,7 @@ window.PROJECTS = [
     "proposalStage": "Confirm revised scope and develop proposal",
     "summary": "A revised project to support a web presence and organised alumni records for the DWU Alumni Madang Chapter.",
     "note": "The generic landowner system was not approved. The revised project is a DWU Alumni website and database, to be scoped with the requesting organisation.",
-    "proposalUrl": "",
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Gabrielle%20LUCKIE?csf=1&web=1&e=e0rBoy",
     "githubUrl": "https://github.com/DWUIS-FYP-2026/230172_DWU-DMIS.git",
     "trelloUrl": "https://trello.com/invite/b/6a46eadbb9107f120599e730/ATTI203f50e5e7dba5a940be0cd764296f0cD2A8AD52/is406-dwu-partnership-registry",
     "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Gabrielle%20LUCKIE?csf=1&web=1&e=e0rBoy"
