@@ -371,14 +371,14 @@ window.PROJECTS = [
     "student": "Zachariah Pilon",
     "initials": "ZP",
     "title": "Project Topic to Be Confirmed",
-    "summary": "A replacement final-year project topic is required before proposal development can proceed.",
     "domain": "Pending allocation",
     "status": "New topic required",
     "proposalStage": "Awaiting new project topic",
+    "summary": "A replacement final-year project topic is required before proposal development can proceed.",
     "note": "The original virtual laboratory proposal was not approved as a final-year project. A new topic must be identified or allocated by the Department.",
     "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230179_DAVS-PNG.git",
+    "trelloUrl": "https://trello.com/b/qoEjGSd7/my-trello-board",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Zachariah%20PILON?csf=1&web=1&e=laGRyN"
   }
 ];
