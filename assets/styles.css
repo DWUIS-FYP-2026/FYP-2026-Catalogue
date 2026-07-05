@@ -417,3 +417,81 @@ select { padding: 8px 9px; }
     flex-direction: column;
   }
 }
+/* Divine Word University visual identity — IS406 project register */
+:root {
+  --navy: #007246;          /* DWU green */
+  --navy-deep: #004d32;     /* deep institutional green */
+  --paper: #fffef8;
+  --canvas: #f3f4ee;
+  --ink: #1e332a;
+  --ink-soft: #53645c;
+  --muted: #75837c;
+  --line: #cbd5cb;
+  --line-strong: #aebdad;
+  --blue: #006b43;
+  --gold: #f0ad16;          /* DWU gold */
+  --green: #006b43;
+  --orange: #a16600;
+  --red: #8c2d29;
+  --violet: #5a466f;
+}
+
+body { background: #f3f4ee; }
+.masthead { background: var(--navy-deep); border-bottom-color: var(--gold); }
+.masthead-inner { min-height: 104px; }
+.institution-mark { gap: 15px; }
+.dwu-crest {
+  width: 66px;
+  height: 66px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, .72);
+}
+.mark-text { gap: 1px; }
+.mark-text .university-name {
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: none;
+}
+.mark-text strong { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
+.mark-text span:last-child { margin-top: 3px; color: rgba(255,255,255,.78); font-size: .69rem; letter-spacing: .06em; }
+.masthead-meta { color: rgba(255,255,255,.88); }
+.register-heading { background: #fffef8; }
+.register-heading .kicker { color: #007246; }
+h1, h2, h3 { color: #004d32; }
+.register-period { color: #5a6e63; border-left-color: var(--gold); }
+.register-period strong { color: #006b43; }
+.register-notice { background: #edf5ed; border-bottom-color: #b9cdb9; }
+.notice-inner strong { color: #006b43; }
+.notice-inner p { color: #385347; }
+.register-data-status { color: #006b43; }
+.project-table th { background: #006b43; }
+.project-table tbody tr:hover { background: #f1f7f1; }
+.submission-guidance { background: #edf3ed; }
+.site-footer { background: #004d32; }
+.workspace-dialog-bar { background: #004d32; border-bottom-color: var(--gold); }
+.supervisor-dialog { border-color: #004d32; }
+.workspace-notice { background: #edf5ed; border-bottom-color: #b9cdb9; }
+.connect-form { border-top-color: #006b43; }
+.connect-intro code { color: #005236; background: #eef5ee; border-color: #c4d5c5; }
+.repository-strip { background: #edf5ed; border-color: #b9cdb9; }
+.repository-strip strong { color: #006b43; }
+.repository-strip span { color: #385347; }
+.primary-button { background: #006b43; border-color: #006b43; }
+.primary-button:hover { background: #004d32; border-color: #004d32; }
+.secondary-button { color: #006b43; border-color: #006b43; }
+.secondary-button:hover { background: #006b43; }
+.status-approved { color: #006b43; }
+.status-reassigned { color: #a16600; }
+@media (max-width: 720px) {
+  .dwu-crest { width: 54px; height: 54px; }
+  .mark-text .university-name { font-size: 1.03rem; }
+  .mark-text strong { font-size: .7rem; }
+  .mark-text span:last-child { font-size: .61rem; }
+}
