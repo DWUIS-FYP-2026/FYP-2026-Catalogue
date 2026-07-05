@@ -356,15 +356,15 @@ window.PROJECTS = [
     "student": "Stanis Sika",
     "initials": "SS",
     "title": "Human Resource Management System",
-    "summary": "A proposed system to automate selected human-resource functions for a clearly identified organisation.",
     "domain": "University Operations",
     "status": "Approved · scope confirmation",
     "proposalStage": "Confirm target organisation and update proposal",
+    "summary": "A proposed system to automate selected human-resource functions for a clearly identified organisation.",
     "note": "Identify the target organisation, update the system vision accordingly and then proceed with requirements collection and proposal development.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Stanis%20SIKA/Proposal?csf=1&web=1&e=MvFr79",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230184_DWU-HRMS.git",
+    "trelloUrl": "https://trello.com/b/6a41c8c83ceafe48298d04bb",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Stanis%20SIKA?csf=1&web=1&e=VluhLo"
   },
   {
     "id": "zachariah-pilon",
