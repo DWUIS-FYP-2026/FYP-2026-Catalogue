@@ -69,3 +69,6 @@ This edition applies the Divine Word University green-and-gold identity across t
 
 ### Branding asset note
 The DWU crest included in `assets/images/dwu-logo.png` is sourced from the Divine Word University logo image published on Wikimedia Commons. Confirm with DWU before reusing it outside this academic project-register context.
+
+## Fixed DWU header
+The DWU masthead is configured as a sticky header. It remains at the top of the page while users scroll the project register, keeping the university identity and Supervisor Sign In action accessible.
