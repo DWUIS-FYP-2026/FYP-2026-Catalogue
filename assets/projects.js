@@ -206,15 +206,15 @@ window.PROJECTS = [
     "student": "Keith Banks Pala",
     "initials": "KB",
     "title": "MediTrack PNG — Drug Tracking System",
-    "summary": "A medicine supply tracking system covering procurement, storage, distribution and dispensing within PNG health services.",
     "domain": "Health",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A medicine supply tracking system covering procurement, storage, distribution and dispensing within PNG health services.",
     "note": "Control the scope by selecting an achievable geographic or organisational pilot. Define the deployment architecture and a practical AI component, if retained.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Keith%20Banks%20PALA/IS406/01_Proposal?csf=1&web=1&e=vE3ICL",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230178_MediTrack_PNG.git",
+    "trelloUrl": "https://trello.com/b/JpODajRX",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Keith%20Banks%20PALA?csf=1&web=1&e=DtJa4t"
   },
   {
     "id": "lisa-numbunda",
