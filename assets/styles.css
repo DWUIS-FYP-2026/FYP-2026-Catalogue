@@ -36,7 +36,26 @@ button { cursor: pointer; }
 .skip-link { position: fixed; top: -60px; left: 20px; z-index: 1000; padding: 9px 12px; color: #fff; background: var(--navy-deep); border: 1px solid #fff; }
 .skip-link:focus { top: 20px; }
 
-.masthead { color: #fff; background: var(--navy); border-bottom: 5px solid var(--gold); }
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  color: #fff;
+  background: var(--navy);
+  border-bottom: 5px solid var(--gold);
+}
+/* Keeps the DWU identity and supervisor access visible while the register is scrolled. */
+.masthead::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, .12);
+  pointer-events: none;
+}
+
 .masthead-inner { min-height: 92px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .institution-mark { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; }
 .mark-monogram { display: grid; place-items: center; width: 45px; height: 45px; border: 1px solid rgba(255,255,255,.76); font-family: Georgia, "Times New Roman", serif; font-size: 1.05rem; letter-spacing: .08em; }
