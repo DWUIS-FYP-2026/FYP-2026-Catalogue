@@ -41,15 +41,15 @@ window.PROJECTS = [
     "student": "Bertha Kinavai",
     "initials": "BK",
     "title": "AI-Based Smart Maritime Risk Profiling System for PNG Customs",
-    "summary": "A decision-support system that analyses vessel and crew information to present clear risk indicators.",
     "domain": "Trade & Border",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A decision-support system that analyses vessel and crew information to present clear risk indicators.",
     "note": "Define the AI method early, including whether the project will use rules, predictive models or another practical risk-scoring approach.",
     "proposalUrl": "",
-    "githubUrl": "",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230169_AIBSMRPSPC.git",
     "trelloUrl": "",
-    "workspaceUrl": ""
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bertha%20KINAVAI?csf=1&web=1&e=RTgLfy"
   },
   {
     "id": "bezzalyn-sambari",
