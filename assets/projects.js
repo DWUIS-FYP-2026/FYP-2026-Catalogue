@@ -11,15 +11,15 @@ window.PROJECTS = [
     "student": "Alex Kaka",
     "initials": "AK",
     "title": "Government Claim Processing System",
-    "summary": "A government service system for tracking payment claims submitted by service providers.",
     "domain": "Government & Civic",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A government service system for tracking payment claims submitted by service providers.",
     "note": "Identify the system custodian, stakeholder roles and government-service workflow. The proposed architecture should be realistic for a multi-stakeholder public service.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Alex%20KAKA/Project%20Proposal?csf=1&web=1&e=lyi21E",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230405_Gov-OCPS.git",
+    "trelloUrl": "https://trello.com/b/6a43182160b92aeecdc8ee6e",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Alex%20KAKA?csf=1&web=1&e=Nte6LU"
   },
   {
     "id": "benroy-gurua",
