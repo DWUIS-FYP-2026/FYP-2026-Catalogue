@@ -1,4 +1,6 @@
-# IS406 Final Year Project Register
+# Divine Word University — IS406 Final Year Project Register
+
+**Faculty of Business & Informatics · Department of Information Systems**
 
 A GitHub Pages–ready academic register for the 2026 IS406 final-year project cohort. The public register is a read-only directory of students, proposed systems, proposal decisions, project summaries, and checked project-evidence links.
 
@@ -59,3 +61,11 @@ Visitors on other devices receive the changed file after GitHub Pages completes 
 
 ## Verified evidence-link publishing
 This version reads the saved project file back from GitHub after every supervisor change and verifies the four evidence-link fields before refreshing the public record. See `VERIFIED_REGISTER_SYNC.md`.
+
+
+## DWU visual identity
+
+This edition applies the Divine Word University green-and-gold identity across the public register and supervisor workspace. The packaged crest is stored at `assets/images/dwu-logo.png`; it is used only for this university project register.
+
+### Branding asset note
+The DWU crest included in `assets/images/dwu-logo.png` is sourced from the Divine Word University logo image published on Wikimedia Commons. Confirm with DWU before reusing it outside this academic project-register context.
