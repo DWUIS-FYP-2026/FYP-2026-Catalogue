@@ -56,15 +56,15 @@ window.PROJECTS = [
     "student": "Bezzalyn Sambari",
     "initials": "BS",
     "title": "MTC E-Learning and Academic Information System",
-    "summary": "An information-system-focused e-learning service for Madang Teachers College, with scope centred on Moodle-enabled learning support.",
     "domain": "Education & Learning",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "An information-system-focused e-learning service for Madang Teachers College, with scope centred on Moodle-enabled learning support.",
     "note": "Concentrate on the information-system scope. Establish a focused initial e-learning service for Madang Teachers College before considering other web services.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bezzalyn%20SAMBARI/01_Proposal?csf=1&web=1&e=nndWsV",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/220109_LMSMTC.git",
+    "trelloUrl": "https://trello.com/b/6a41c5a6217ae62afd1fc11d",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bezzalyn%20SAMBARI?csf=1&web=1&e=8YXoLQ"
   },
   {
     "id": "bossie-tatut",
