@@ -281,15 +281,15 @@ window.PROJECTS = [
     "student": "Natasha Onio",
     "initials": "NO",
     "title": "Localised AI-Assisted Learning Hub",
-    "summary": "A web-based learning hub for early childhood to secondary learners, bringing resources and structured learning support together.",
     "domain": "Education & Learning",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A web-based learning hub for early childhood to secondary learners, bringing resources and structured learning support together.",
     "note": "Define the AI feature, data sources and recommendation logic. Keep the first release focused and distinguish essential learning functions from future enhancements.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Natasha%20ONIO/01_Proposal?csf=1&web=1&e=4QrrQl",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230407_LAIWBLHPSL.git",
+    "trelloUrl": "https://trello.com/invite/b/6a41c5c8fc8efebb000f5d25/ATTI08c36a6c00a0b682831945d4d9419ea21678CA7A/is406-230407-localized-ai-assisted-web-based-learning-hub-for-prep-to-secondary-school-learners",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Natasha%20ONIO?csf=1&web=1&e=T1Wszf"
   },
   {
     "id": "oathniel-konou",
