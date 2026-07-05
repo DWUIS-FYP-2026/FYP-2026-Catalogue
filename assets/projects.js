@@ -326,14 +326,14 @@ window.PROJECTS = [
     "student": "Samantha Mako",
     "initials": "SM",
     "title": "Partnership Information Management System",
-    "summary": "A revised project to support structured partnership information management for the Partnership Office.",
     "domain": "University Operations",
     "status": "Reassigned",
     "proposalStage": "Confirm revised scope and develop proposal",
+    "summary": "A revised project to support structured partnership information management for the Partnership Office.",
     "note": "The original generic HRM proposal was not approved. Develop the revised project scope with the Partnership Office and document its key information workflows.",
     "proposalUrl": "",
     "githubUrl": "",
-    "trelloUrl": "",
+    "trelloUrl": "https://trello.com/b/Tx7xetst/my-trello-board",
     "workspaceUrl": ""
   },
   {
