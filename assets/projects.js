@@ -48,7 +48,7 @@ window.PROJECTS = [
     "note": "Define the AI method early, including whether the project will use rules, predictive models or another practical risk-scoring approach.",
     "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bertha%20KINAVAI?csf=1&web=1&e=7Xw7aG",
     "githubUrl": "https://github.com/DWUIS-FYP-2026/230169_AIBSMRPSPC.git",
-    "trelloUrl": "",
+    "trelloUrl": "https://trello.com/b/6a4addb5ba64811afebd52ca",
     "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bertha%20KINAVAI?csf=1&web=1&e=RTgLfy"
   },
   {
