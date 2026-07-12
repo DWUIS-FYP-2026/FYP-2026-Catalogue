@@ -146,15 +146,15 @@ window.PROJECTS = [
     "student": "Fredricka Chloe Tomande",
     "initials": "FT",
     "title": "Parole Management System — PNG Correctional Service",
-    "summary": "A system to support parole processes and collaboration across correctional and justice stakeholders.",
     "domain": "Public Safety & Justice",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A system to support parole processes and collaboration across correctional and justice stakeholders.",
     "note": "Map the end-to-end parole workflow and account for secure data sharing, approvals and integration boundaries involving relevant agencies.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Fredricka%20Chloe%20TOMANDE/01_Proposal?csf=1&web=1&e=zSELz9",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230186_PPSPNGCIS.git",
+    "trelloUrl": "https://trello.com/b/6a474339c3f7d6f6a482191a",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Fredricka%20Chloe%20TOMANDE?csf=1&web=1&e=qnN78v"
   },
   {
     "id": "gabrielle-luckie",
