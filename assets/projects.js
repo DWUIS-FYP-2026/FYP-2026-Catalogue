@@ -311,15 +311,15 @@ window.PROJECTS = [
     "student": "Ryan Kaipel",
     "initials": "RK",
     "title": "Online Booking and Reservation System for Yumi Yet Lodge",
-    "summary": "A web-based booking and reservation system tailored to the operational needs of Yumi Yet Lodge in Alotau.",
     "domain": "Tourism & Hospitality",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A web-based booking and reservation system tailored to the operational needs of Yumi Yet Lodge in Alotau.",
     "note": "Document the organisation-specific booking workflow, chosen architecture and realistic payment-handling scope before implementation.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Ryan%20KAIPEL?csf=1&web=1&e=PhdCMZ",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230168_OBRSYYL.git",
+    "trelloUrl": "https://trello.com/b/6a4adfbb1eed155a4488c462",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Ryan%20KAIPEL?csf=1&web=1&e=PhdCMZ"
   },
   {
     "id": "samantha-mako",
