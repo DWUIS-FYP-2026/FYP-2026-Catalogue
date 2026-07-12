@@ -251,15 +251,15 @@ window.PROJECTS = [
     "student": "Mond Mare",
     "initials": "MM",
     "title": "Web-Based Services for Banz Lutheran Church College",
-    "summary": "A combined information-systems and infrastructure proposal involving student services and a local intranet environment.",
     "domain": "Education & Learning",
     "status": "Approved · scope confirmation",
     "proposalStage": "Confirm primary scope and develop proposal",
+    "summary": "A combined information-systems and infrastructure proposal involving student services and a local intranet environment.",
     "note": "Confirm the primary focus and clearly separate the priority system deliverable from infrastructure work to keep the project feasible.",
-    "proposalUrl": "",
-    "githubUrl": "",
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Mond%20MARE?csf=1&web=1&e=PUxoCF",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/180170_IBMSLCC.git",
     "trelloUrl": "",
-    "workspaceUrl": ""
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Mond%20MARE?csf=1&web=1&e=PUxoCF"
   },
   {
     "id": "naptalai-nakra",
