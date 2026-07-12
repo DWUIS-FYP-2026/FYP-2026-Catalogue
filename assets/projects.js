@@ -341,15 +341,15 @@ window.PROJECTS = [
     "student": "Solomon Polomon",
     "initials": "SP",
     "title": "Stoney Transit Home Website",
-    "summary": "A revised project to deliver a public-facing website for the Stoney Transit Home business.",
     "domain": "Business & Web Services",
-    "status": "Reassigned",
+    "status": "Approved",
     "proposalStage": "Confirm revised scope and develop proposal",
+    "summary": "A revised project to deliver a public-facing website for the Stoney Transit Home business.",
     "note": "The original student performance system was not approved. Define the required website content, services, hosting and administrative workflow with the organisation.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Solomon%20POLOMON?csf=1&web=1&e=AzKEWp",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230180_STHWebsite.git",
+    "trelloUrl": "https://trello.com/b/6a41ca60910e8907d0c2c180",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Solomon%20POLOMON?csf=1&web=1&e=AzKEWp"
   },
   {
     "id": "stanis-sika",
