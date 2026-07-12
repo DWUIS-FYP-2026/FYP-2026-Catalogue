@@ -46,7 +46,7 @@ window.PROJECTS = [
     "proposalStage": "Requirements collection and proposal development",
     "summary": "A decision-support system that analyses vessel and crew information to present clear risk indicators.",
     "note": "Define the AI method early, including whether the project will use rules, predictive models or another practical risk-scoring approach.",
-    "proposalUrl": "",
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bertha%20KINAVAI?csf=1&web=1&e=7Xw7aG",
     "githubUrl": "https://github.com/DWUIS-FYP-2026/230169_AIBSMRPSPC.git",
     "trelloUrl": "",
     "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Bertha%20KINAVAI?csf=1&web=1&e=RTgLfy"
