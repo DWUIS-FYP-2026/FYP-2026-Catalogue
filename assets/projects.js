@@ -296,15 +296,15 @@ window.PROJECTS = [
     "student": "Oathniel Konou",
     "initials": "OK",
     "title": "Secure Patient Information System with Threat Prevention",
-    "summary": "A health information system concept combining patient records with practical security monitoring and prevention features.",
     "domain": "Health",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
+    "summary": "A health information system concept combining patient records with practical security monitoring and prevention features.",
     "note": "Control the scope by prioritising the patient information system. Any AI component should remain practical, such as rule-based anomaly alerts or basic security analytics.",
-    "proposalUrl": "",
-    "githubUrl": "",
-    "trelloUrl": "",
-    "workspaceUrl": ""
+    "proposalUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Oathniel%20KONOU/Project?csf=1&web=1&e=Q7kFXO",
+    "githubUrl": "https://github.com/DWUIS-FYP-2026/230170_PSISTPESPHA.git",
+    "trelloUrl": "https://trello.com/b/6a41c588a11d09234fc8f2c0",
+    "workspaceUrl": "https://dwupng-my.sharepoint.com/:f:/r/personal/mcletus_dwu_ac_pg/Documents/IS_Symposium_Project_Documentations/Oathniel%20KONOU?csf=1&web=1&e=wcqEwc"
   },
   {
     "id": "ryan-kaipel",
