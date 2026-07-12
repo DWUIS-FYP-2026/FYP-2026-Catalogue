@@ -70,7 +70,7 @@ window.PROJECTS = [
     "id": "bossie-tatut",
     "student": "Bossie Tatut",
     "initials": "BT",
-    "title": "CENTRAK — Census Tracking System",
+    "title": "EVACS ( Eligible Voter Automated Collection System)",
     "domain": "Government & Civic",
     "status": "Approved",
     "proposalStage": "Requirements collection and proposal development",
